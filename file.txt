@@ -2,7 +2,7 @@ S This is a test file
 SS sub
 SSS subsub
 BQ
-Bl
+BL
 IT test item
 EL
 EQ
