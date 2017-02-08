@@ -2,7 +2,7 @@ from __future__ import print_function
 import sys
 
 OPCODES = ["S", "SS", "SSS", "BL", "EL", "BQ", "EQ", "IT", "FIG"]
-file_name = sys.argv
+file_name = sys.argv[1]
 #file_name = "input.txt"
 out = file_name.replace(".txt", ".tex")
 text_file = open(file_name, 'r')
@@ -42,7 +42,7 @@ for line in text_file:
             print("\\begin{figure}[H]")
             print("  \\begin{center}")
             print("    \\includegraphics[width=0."+line[4]+"\\textwidth]{picture.png}")
-            print("    \\caption{"+line[6:]+"}")
+            print("    \\caption{"+line[6:-1]+"}")
             print("    \\label{label}")
             print("  \\end{center}")
             print("\\end{figure}")
