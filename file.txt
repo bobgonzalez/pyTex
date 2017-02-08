@@ -1,0 +1,9 @@
+S This is a test file
+SS sub
+SSS subsub
+BQ
+Bl
+IT test item
+EL
+EQ
+FIG 9 caption is here
