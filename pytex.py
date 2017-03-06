@@ -1,6 +1,7 @@
 from __future__ import print_function
 import sys
 from datetime import date
+from subprocess import call
 
 """
     TODO: handle extra empty lines
@@ -10,12 +11,11 @@ from datetime import date
     TODO: adjust vertical spacing of LINE
     WISH_LIST_OF_MICROEXPRESSIONS:
          'B{' -> \textbf{} (unless '\B{')
-
+         BP + EP -> begin / end proof / theorem / lemma / corollary
 """
 
 OPCODES = ["S", "SS", "SSS", "SN", "SSN", "SSSN", "BL", "EL", "BQ", "EQ", "BB", "EB", "IT", "FIG", "BLN", "ELN", "LINE"]
 file_name = sys.argv[1]
-#file_name = "input.txt"
 out = file_name.replace(".txt", ".tex")
 text_file = open(file_name, 'r')
 sys.stdout = open(out, 'w')
@@ -79,3 +79,5 @@ for line in text_file:
             print("\\rule{\\linewidth}{0.2mm}")
 print("\n\\end{document}")
 text_file.close()
+sys.stdout = sys.__stdout__
+call(["pdflatex", str(out)])
