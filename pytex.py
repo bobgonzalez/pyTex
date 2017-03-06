@@ -7,15 +7,13 @@ from datetime import date
     TODO: flag for explicit filename extensions
     TODO: optional date override
     TODO: ability to add packages ", ".join[:-2]
+    TODO: adjust vertical spacing of LINE
     WISH_LIST_OF_MICROEXPRESSIONS:
          'B{' -> \textbf{} (unless '\B{')
-         LINE x -> line across page where x = % of page width
-         BB + EB -> begin / end box
-
 
 """
 
-OPCODES = ["S", "SS", "SSS", "SN", "SSN", "SSSN", "BL", "EL", "BQ", "EQ", "IT", "FIG", "BLN", "ELN"]
+OPCODES = ["S", "SS", "SSS", "SN", "SSN", "SSSN", "BL", "EL", "BQ", "EQ", "BB", "EB", "IT", "FIG", "BLN", "ELN", "LINE"]
 file_name = sys.argv[1]
 #file_name = "input.txt"
 out = file_name.replace(".txt", ".tex")
@@ -26,7 +24,7 @@ file_name = file_name.replace("_", "\\_")
 
 print("\\documentclass{article}")
 print("\\pagestyle{plain}")
-print("\\usepackage{graphicx, wrapfig, mathpazo, csquotes, float}\n")
+print("\\usepackage{graphicx, wrapfig, mathpazo, csquotes, float, tcolorbox}\n")
 print("\\begin{document}\n")
 print("\\title{\\textbf{" + file_name[:-4] + "}}")
 print("\\author{\\textsc{}}")
@@ -62,6 +60,10 @@ for line in text_file:
             print("\\begin{displayquote}")
         elif row[0] == "EQ":
             print("\\end{displayquote}")
+        elif row[0] == "BB":
+            print("\\begin{tcolorbox}")
+        elif row[0] == "EB":
+            print("\\end{tcolorbox}")
         elif row[0] == "IT":
             print("\\item " + line[3].upper() + line[4:-1])
             #print("\\item " + line[3:-1])
@@ -73,5 +75,7 @@ for line in text_file:
             print("    \\label{label}")
             print("  \\end{center}")
             print("\\end{figure}")
+        elif row[0] == "LINE":
+            print("\\rule{\\linewidth}{0.2mm}")
 print("\n\\end{document}")
 text_file.close()
