@@ -7,6 +7,13 @@ from datetime import date
     TODO: flag for explicit filename extensions
     TODO: optional date override
     TODO: ability to add packages ", ".join[:-2]
+    WISH_LIST_OF_MICROEXPRESSIONS:
+         'B{' -> \textbf{} (unless '\B{')
+         BOL -> begin{enumerate}
+         EOOL -> end{enumerate}
+         LINE x -> line across page where x = % of page width
+
+
 """
 
 OPCODES = ["S", "SS", "SSS", "BL", "EL", "BQ", "EQ", "IT", "FIG"]
