@@ -4,6 +4,9 @@ from datetime import date
 
 """
     TODO: handle extra empty lines
+    TODO: flag for explicit filename extensions
+    TODO: optional date override
+    TODO: ability to add packages ", ".join[:-2]
 """
 
 OPCODES = ["S", "SS", "SSS", "BL", "EL", "BQ", "EQ", "IT", "FIG"]
@@ -44,7 +47,8 @@ for line in text_file:
         elif row[0] == OPCODES[6]:
             print("\\end{displayquote}")
         elif row[0] == OPCODES[7]:
-            print("\\item " + line[3:-1])
+            print("\\item " + line[3].upper() + line[4:-1])
+            #print("\\item " + line[3:-1])
         elif row[0] == OPCODES[8]:
             print("\\begin{figure}[H]")
             print("  \\begin{center}")
