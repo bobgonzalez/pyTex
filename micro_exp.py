@@ -4,6 +4,7 @@ WISH_LIST_OF_MICROEXPRESSIONS:
         - BP + EP -> begin / end proof / theorem / lemma / corollary
         - TLINE -> \\ \hline
         - BT + ET -> begin table center tabular end where BT takes in '|l|l|' parameter to tabular
+        - IG -> print this line as is (ignore micro-expressions)
 """
 
 
