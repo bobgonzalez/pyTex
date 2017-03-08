@@ -45,7 +45,12 @@ def init():
     opcodes = ["S", "SS", "SSS", "SN", "SSN", "SSSN", "BL", "EL", "BQ", "EQ", "BB", "EB", "IT", "FIG", "BLN", "ELN", "LINE"]
     file_name = sys.argv[1]
     out = file_name.replace(".txt", ".tex")
-    text_file = open(file_name, 'r')
+    try:
+        text_file = open(file_name, 'r')
+    except (IOError, OSError) as e:
+        #invalid_file()
+        print("file " + file_name + " not found! \nPlease enter file in local directory or absolute path to file.")
+        return
     sys.stdout = open(out, 'w')
     cur_date = date.today()
     file_name = file_name.replace("_", "\\_")
