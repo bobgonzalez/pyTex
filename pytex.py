@@ -15,7 +15,7 @@ from subprocess import call
          'B{' -> \textbf{} (unless '\B{')
          BP + EP -> begin / end proof / theorem / lemma / corollary
          TLINE -> \\ \hline
-         BT + ET -> begin table center tabular end where BT takes in '|l|l|' paramenter to tabular
+         BT + ET -> begin table center tabular end where BT takes in '|l|l|' parameter to tabular
 """
 
 
