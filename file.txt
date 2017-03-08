@@ -1,9 +1,0 @@
-S This is a test file
-SS sub
-SSS subsub
-BQ
-BL
-IT test item
-EL
-EQ
-FIG 9 caption is here
