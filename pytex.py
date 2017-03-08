@@ -20,12 +20,17 @@ from subprocess import call
 
 
 def help_me():
-    print("S - Subscetion \nSS - SubSection \nSSS - SubSubSection\n" +
-          "SN - Section Numbered\nSSN - SubSection Numbered\nSSSN - SubSubSection Numbered\n" +
-          "BL - Begin List\nEL - End List\nBLN - Begin List Numbered\nELN - End List Numbered\n" +
-          "BQ - Begin Text Isolation\nEQ - End Text Isolation\nBB - Begin Drawing A Box Around Text\n" +
-          "EB - End Drawing A Box Aroung Text\nIT - Item\nFIG - 3 Parameters, space separated\n" +
-          "\t% of Page-Width < 1, \n\tPicture Name (assumes .png), \n\tCaption\nLINE - Draw A Line Across Page")
+    print("___________________________________________________\n" +
+          "\t\tHelp\n"
+          "___________________________________________________" +
+          "\nS  \tSection \nSS \tSubSection \nSSS \tSubSubSection\n" +
+          "SN \tSection Numbered\nSSN \tSubSection Numbered\nSSSN \tSubSubSection Numbered\n" +
+          "BL \tBegin List\nEL \tEnd List\nBLN \tBegin List Numbered\nELN \tEnd List Numbered\n" +
+          "BQ \tBegin Text Isolation\nEQ \tEnd Text Isolation\nBB \tBegin Drawing A Box Around Text\n" +
+          "EB \tEnd Drawing A Box Around Text\nIT \tItem\nLINE \tDraw A Line Across Page" +
+          "\nFIG \t3 Parameters, space separated\n" +
+          "\t\t% of Page-Width < 1, \n\t\tPicture Name (assumes .png), \n\t\tCaption" +
+          "\n___________________________________________________")
 
 
 def init():
