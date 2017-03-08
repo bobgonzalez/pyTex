@@ -17,6 +17,30 @@ from subprocess import call
          TLINE -> \\ \hline
          BT + ET -> begin table center tabular end where BT takes in '|l|l|' paramenter to tabular
 """
+if(sys.argv[1]=='-h' or '--help')
+    help()
+else
+    regular()
+def help():
+    print("S - Subscetion \n
+          SS - SubSection \n
+          SSS - SubSubSection\n
+          SN - Section Numbered\n
+          SSN - SubSection Numbered\n
+          SSSN - SubSubSection Numbered\n
+          BL - Begin List\n
+          EL - End List\n
+          BLN - Begin List Numbered\n
+          ELN - End List Numbered\n
+          BQ - Begin Text Isolation\n
+          EQ - End Text Isolation\n
+          BB - Begin Drawing A Box Around Text\n
+          EB - End Drawing A Box Aroung Text\n
+          IT - Item\n
+          FIG - 3 Parameters\n
+          \t percentage of width of page < 1, Title of Picture,Caption\n
+          LINE - Draw A Line Across The Page"
+          
 
 
 def token_check(line1):
@@ -27,7 +51,7 @@ def token_check(line1):
     new_line = ' '.join(sp_line)
     return new_line
 
-
+def regular():
 OPCODES = ["S", "SS", "SSS", "SN", "SSN", "SSSN", "BL", "EL", "BQ", "EQ", "BB", "EB", "IT", "FIG", "BLN", "ELN", "LINE"]
 file_name = sys.argv[1]
 out = file_name.replace(".txt", ".tex")
