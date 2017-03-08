@@ -24,12 +24,12 @@ def help_me():
           "SN - Section Numbered\nSSN - SubSection Numbered\nSSSN - SubSubSection Numbered\n" +
           "BL - Begin List\nEL - End List\nBLN - Begin List Numbered\nELN - End List Numbered\n" +
           "BQ - Begin Text Isolation\nEQ - End Text Isolation\nBB - Begin Drawing A Box Around Text\n" +
-          "EB - End Drawing A Box Aroung Text\nIT - Item\nFIG - 3 Parameters\n" +
-          "\t percentage of width of page < 1, Title of Picture,Caption\nLINE - Draw A Line Across The Page")
+          "EB - End Drawing A Box Aroung Text\nIT - Item\nFIG - 3 Parameters, space separated\n" +
+          "\t percentage of page width < 1, Picture Name (assumes .png), Caption\nLINE - Draw A Line Across Page")
 
 
 def init():
-    OPCODES = ["S", "SS", "SSS", "SN", "SSN", "SSSN", "BL", "EL", "BQ", "EQ", "BB", "EB", "IT", "FIG", "BLN", "ELN", "LINE"]
+    opcodes = ["S", "SS", "SSS", "SN", "SSN", "SSSN", "BL", "EL", "BQ", "EQ", "BB", "EB", "IT", "FIG", "BLN", "ELN", "LINE"]
     file_name = sys.argv[1]
     out = file_name.replace(".txt", ".tex")
     text_file = open(file_name, 'r')
@@ -48,7 +48,7 @@ def init():
 
     for line in text_file:
         row = line.split()
-        if row[0] not in OPCODES:
+        if row[0] not in opcodes:
             print(token_check(line))
         else:
             if row[0] == "S":
