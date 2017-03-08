@@ -25,7 +25,7 @@ def help_me():
           "BL - Begin List\nEL - End List\nBLN - Begin List Numbered\nELN - End List Numbered\n" +
           "BQ - Begin Text Isolation\nEQ - End Text Isolation\nBB - Begin Drawing A Box Around Text\n" +
           "EB - End Drawing A Box Aroung Text\nIT - Item\nFIG - 3 Parameters, space separated\n" +
-          "\t percentage of page width < 1, Picture Name (assumes .png), Caption\nLINE - Draw A Line Across Page")
+          "\t% of Page-Width < 1, \n\tPicture Name (assumes .png), \n\tCaption\nLINE - Draw A Line Across Page")
 
 
 def init():
