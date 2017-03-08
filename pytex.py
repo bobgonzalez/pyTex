@@ -2,6 +2,7 @@ from __future__ import print_function
 import sys
 from datetime import date
 from subprocess import call
+from help_me import help_me
 
 """
     *TODO: handle empty lines
@@ -20,25 +21,6 @@ from subprocess import call
         - TLINE -> \\ \hline
         - BT + ET -> begin table center tabular end where BT takes in '|l|l|' parameter to tabular
 """
-
-
-def help_me():
-    print("___________________________________________________" +
-          "\n*The micro-expressions that follow must \n be the first word on the line to be expanded" +
-          "\n---------------------------------------------------" +
-          "\nS  \tSection \nSS \tSubSection \nSSS \tSubSubSection\n" +
-          "SN \tSection Numbered\nSSN \tSubSection Numbered\nSSSN \tSubSubSection Numbered\n" +
-          "BL \tBegin List\nEL \tEnd List\nBLN \tBegin List Numbered\nELN \tEnd List Numbered\n" +
-          "BQ \tBegin Text Isolation\nEQ \tEnd Text Isolation\nBB \tBegin Drawing A Box Around Text\n" +
-          "EB \tEnd Drawing A Box Around Text\nIT \tItem\nLINE \tDraw A Line Across Page" +
-          "\nFIG \t3 Parameters, space separated\n" +
-          "\t\t% of Page-Width < 1, \n\t\tPicture Name (assumes .png), \n\t\tCaption" +
-          "\n___________________________________________________" +
-          "\n*The micro-expressions that follow may \n be any word on the line and will be expanded" +
-          "\n---------------------------------------------------" +
-          "\nB{ \tBolds all text till closing },\n\tmust have a space preceding it" +
-          "\n___________________________________________________"
-          )
 
 
 def init():
