@@ -16,7 +16,7 @@ from subprocess import call
         - add / remove micro-expression definition
 
     WISH_LIST_OF_MICROEXPRESSIONS:
-        - 'B{' -> \textbf{} (unless '\B{')
+        -'B{' -> \textbf{} (unless '\B{')
         - BP + EP -> begin / end proof / theorem / lemma / corollary
         - TLINE -> \\ \hline
         - BT + ET -> begin table center tabular end where BT takes in '|l|l|' parameter to tabular
