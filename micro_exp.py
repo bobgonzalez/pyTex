@@ -141,9 +141,11 @@ class Exp14(Exp):
     def handler(self, line):
         l = token_check(line)
         if l[3] == '\\':
-            return str("\\item " + l[3:11] + l[11].upper() + l[12:])
+            return str("\\item " + l[3:])
+        # return str("\\item " + l[3:11] + l[11].upper() + l[12:])
         else:
-            return str("\\item " + l[3].upper() + l[4:])
+            return str("\\item " + l[3:])
+        # return str("\\item " + l[3].upper() + l[4:])
 
 
 class Exp15(Exp):
