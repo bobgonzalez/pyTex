@@ -5,17 +5,21 @@ from subprocess import call
 
 """
     *TODO: handle empty lines
-    **TODO: flag for explicit filename extensions
-    ***TODO: WYSIWYG GUI
-    ***TODO: optional date override (post-GUI)
-    ***TODO: ability to add packages ", ".join[:-2] (post-GUI)
-    **TODO: adjust vertical spacing of LINE
     *TODO: support tables
+    **TODO: flag for explicit filename extensions
+    **TODO: adjust vertical spacing of LINE
+
+    WISH_LIST_FOR_GUI:
+        - ability to add packages ", ".join[:-2]
+        - optional date override
+        - WYSIWYG GUI (left pane = editor, right pane = viewer, bottom slice = stout buffer)
+        - add / remove micro-expression definition
+
     WISH_LIST_OF_MICROEXPRESSIONS:
-         'B{' -> \textbf{} (unless '\B{')
-         BP + EP -> begin / end proof / theorem / lemma / corollary
-         TLINE -> \\ \hline
-         BT + ET -> begin table center tabular end where BT takes in '|l|l|' parameter to tabular
+        - 'B{' -> \textbf{} (unless '\B{')
+        - BP + EP -> begin / end proof / theorem / lemma / corollary
+        - TLINE -> \\ \hline
+        - BT + ET -> begin table center tabular end where BT takes in '|l|l|' parameter to tabular
 """
 
 
