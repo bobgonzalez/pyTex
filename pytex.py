@@ -4,15 +4,29 @@ from datetime import date
 from subprocess import call
 
 """
-    TODO: handle extra empty lines
-    TODO: flag for explicit filename extensions
-    TODO: optional date override
-    TODO: ability to add packages ", ".join[:-2]
-    TODO: adjust vertical spacing of LINE
+    *TODO: handle empty lines
+    **TODO: flag for explicit filename extensions
+    ***TODO: WYSIWYG GUI
+    ***TODO: optional date override (post-GUI)
+    ***TODO: ability to add packages ", ".join[:-2] (post-GUI)
+    **TODO: adjust vertical spacing of LINE
+    *TODO: support tables
     WISH_LIST_OF_MICROEXPRESSIONS:
          'B{' -> \textbf{} (unless '\B{')
          BP + EP -> begin / end proof / theorem / lemma / corollary
+         TLINE -> \\ \hline
+         BT + ET -> begin table center tabular end where BT takes in '|l|l|' paramenter to tabular
 """
+
+
+def token_check(line1):
+    sp_line = line1.split()
+    for i, token in enumerate(sp_line):
+        if token[0:2] == "B{":
+            sp_line[i] = "\\textbf" + str(token[1:])
+    new_line = ' '.join(sp_line)
+    return new_line
+
 
 OPCODES = ["S", "SS", "SSS", "SN", "SSN", "SSSN", "BL", "EL", "BQ", "EQ", "BB", "EB", "IT", "FIG", "BLN", "ELN", "LINE"]
 file_name = sys.argv[1]
@@ -34,7 +48,7 @@ print("\\maketitle\n")
 for line in text_file:
     row = line.split()
     if row[0] not in OPCODES:
-        print(line)
+        print(token_check(line))
     else:
         if row[0] == "S":
             print("\\section*{" + line[2:-1] + "}")
@@ -65,7 +79,11 @@ for line in text_file:
         elif row[0] == "EB":
             print("\\end{tcolorbox}")
         elif row[0] == "IT":
-            print("\\item " + line[3].upper() + line[4:-1])
+            l = token_check(line)
+            if l[3] == '\\':
+                print("\\item " + l[3:11] + l[11].upper() + l[12:])
+            else:
+                print("\\item " + l[3].upper() + l[4:])
             #print("\\item " + line[3:-1])
         elif row[0] == "FIG":
             print("\\begin{figure}[H]")
