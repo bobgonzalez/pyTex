@@ -1,0 +1,12 @@
+S pyTex Documentation
+SS Dependencies
+BLN
+IT pdflatex
+ELN
+SS What is pyTex
+pyTex expands a growing set of mnemonic micro-expressions into proper LaTex and compiles the respective *.tex into a pdf with B{pdflatex}.
+SS The help command:
+BB
+python pytex.py -h \quad or \quad python pytex.py --help
+EB
+FIG 75 word_vs_latex Word v.s. Latex
