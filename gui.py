@@ -12,7 +12,7 @@ from help_me import help_me
     *TODO: file open concatenates the new file to the end of the old file in the editor
     *TODO: implement file save
     *TODO: redirect compile to buffer window
-    *TOdO: split buffer frame into buffer 75% left help 25% right
+    *TODO: split buffer frame into buffer 75% left help 25% right
 """
 
 
