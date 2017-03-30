@@ -11,8 +11,8 @@ from micro_exp import MicroExpressions
     **TODO: adjust vertical spacing of LINE
 """
 
-def init():
-    file_name = sys.argv[1]
+def init(file_name):
+    #file_name = sys.argv[1]
     out = file_name.replace(".txt", ".tex")
     try:
         text_file = open(file_name, 'r')
