@@ -6,6 +6,7 @@ from token_check import token_check
 from micro_exp import MicroExpressions
 """
     *TODO: handle empty lines
+    *TODO: after successful compilation help command does not print to buffer
     *TODO: support tables
     **TODO: flag for explicit filename extensions
     **TODO: adjust vertical spacing of LINE
@@ -44,7 +45,7 @@ def init(file_name):
 def make_header():
     ret = ["\\documentclass{article}",
            "\\pagestyle{plain}",
-           "\\usepackage{graphicx, wrapfig, mathpazo, csquotes, float, tcolorbox}\n",
+           "\\usepackage{graphicx, wrapfig, mathpazo, csquotes, float, tcolorbox, amsmath, amssymb, tikz}\n",
            "\\begin{document}\n"]
     return '\n'.join(ret)
 
