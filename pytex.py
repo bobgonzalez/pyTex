@@ -8,7 +8,6 @@ from expand_ptex import init as compile_me
         - ability to add packages (", ".join[:-2])
         - optional date override
         - optional make title (author)
-        - WYSIWYG GUI (left pane = editor, right pane = viewer, bottom slice = stout buffer)
         - add / remove micro-expression definition
 
 """
