@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from __future__ import print_function
 import sys
 from help_me import help_me
@@ -14,6 +15,6 @@ from expand_ptex import init as compile_me
 
 
 if sys.argv[1] == '-h' or sys.argv[1] == '--help':
-    help_me()
+    print(help_me())
 else:
-    compile_me()
+    compile_me(sys.argv[1])
