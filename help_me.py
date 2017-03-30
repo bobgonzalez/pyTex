@@ -1,5 +1,5 @@
 def help_me():
-    print("___________________________________________________\n" +
+    return("___________________________________________________\n" +
           "*The micro-expressions that follow must \n" +
           " be the first word on the line to be expanded\n" +
           "---------------------------------------------------\n" +
