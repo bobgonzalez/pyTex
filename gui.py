@@ -1,9 +1,11 @@
 #!/usr/bin/python
-import sys
 from Tkinter import *
-import os
 from tkFileDialog import askopenfilename
 from PIL import Image, ImageTk                   #sudo apt-get install python-imaging-tk
+from expand_ptex import init as compile_me
+from help_me import help_me
+import tkFileDialog
+
 
 
 class StdoutRedirector(object):
@@ -18,12 +20,17 @@ class Redirector(object):
     def __init__(self, parent):
         self.parent = parent
         self.InitUI()
-        button = Button(self.parent, text="Refresh", command=self.main)
+        self.input_f = ''
+        button = Button(self.parent, text="Compile", command=self.main)
+        button.pack(side=BOTTOM)
+        button = Button(self.parent, text="Help", command=self.main_help)
         button.pack(side=BOTTOM)
 
     def main(self):
-        st = os.popen("ls").read()
-        print st
+        print compile_me(self.input_f)
+
+    def main_help(self):
+        print help_me()
 
     def InitUI(self):
         self.text_box = Text(self.parent, bd=5)
@@ -33,10 +40,21 @@ class Redirector(object):
 
 def callback():
     name = askopenfilename()
+    gui.input_f = name
     with open(name, 'r') as x:
         content = x.read()
     L1.insert(INSERT, content)
 
+
+def file_save():
+    f = tkFileDialog.asksaveasfile(mode='w', defaultextension=".txt")
+    if f is None: # asksaveasfile return `None` if dialog closed with "cancel".
+        return
+    text2save = str(text.get(1.0, END)) # starts from `1.0`, not `0.0`
+    f.write(text2save)
+    f.close() # `()` was missing.
+
+PATH_TO_INPUT = ''
 
 root = Tk()
 menu = Menu(root)
@@ -45,6 +63,7 @@ root.config(menu=menu)
 fileMenu = Menu(menu)
 menu.add_cascade(label="File", menu=fileMenu)
 fileMenu.add_command(label="Open", command=callback)
+fileMenu.add_command(label="Save", command=file_save)
 fileMenu.add_separator()
 fileMenu.add_command(label="Exit", command=root.quit)
 
@@ -54,7 +73,10 @@ L1 = Text(root, bd=5)
 L1.pack(side=LEFT, fill=BOTH, expand=YES)
 
 '''right window for jpeg (just test file right now)'''
-img = ImageTk.PhotoImage(Image.open("/home/ub/Pictures/test"))
+''' TODO : create buttons for zooming in and out '''
+img1 = Image.open("test.jpg")
+img1 = img1.resize((500, 800), Image.ANTIALIAS)
+img = ImageTk.PhotoImage(img1)
 panel = Label(root, image=img)
 panel.pack(side=RIGHT, fill=BOTH, expand=YES)
 
