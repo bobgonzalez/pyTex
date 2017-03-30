@@ -10,9 +10,9 @@ WISH_LIST_OF_MICROEXPRESSIONS:
 
 class MicroExpressions():
     def __init__(self):
-        self.exps = [Exp0(), Exp1(), Exp2(), Exp3(), Exp4(), Exp5(), Exp6(),
+        self.exps = [Exp17(), Exp0(), Exp1(), Exp2(), Exp3(), Exp4(), Exp5(), Exp6(),
                      Exp7(), Exp8(), Exp9(), Exp10(), Exp11(), Exp12(), Exp13(),
-                     Exp14(), Exp15(), Exp16()]
+                     Exp14(), Exp15(), Exp16(), Exp18()]
 
 
 class Exp():
@@ -171,3 +171,21 @@ class Exp16(Exp):
 
     def handler(self, line):
         return str("\\rule{\\linewidth}{0.2mm}")
+
+
+"""TODO : Entry in help dialog"""
+class Exp17(Exp):
+    def __init__(self):
+        Exp.__init__(self, "IG")
+
+    def handler(self, line):
+        return token_check(line[3:])
+
+
+"""TODO : Entry in help dialog"""
+class Exp18(Exp):
+    def __init__(self):
+        Exp.__init__(self, "IGA")
+
+    def handler(self, line):
+        return line[4:]
