@@ -4,8 +4,16 @@ from tkFileDialog import askopenfilename
 from PIL import Image, ImageTk                   #sudo apt-get install python-imaging-tk
 from expand_ptex import init as compile_me
 from help_me import help_me
-import tkFileDialog
-
+#import tkFileDialog
+"""
+    *TODO: add check box for optional make title
+    *TODO: move from .pack() to .grid()
+    *TODO: zoom buttons for viewer frame
+    *TODO: file open concatenates the new file to the end of the old file in the editor
+    *TODO: implement file save
+    *TODO: redirect compile to buffer window
+    *TOdO: split buffer frame into buffer 75% left help 25% right
+"""
 
 
 class StdoutRedirector(object):
@@ -45,7 +53,7 @@ def callback():
         content = x.read()
     L1.insert(INSERT, content)
 
-
+"""
 def file_save():
     f = tkFileDialog.asksaveasfile(mode='w', defaultextension=".txt")
     if f is None: # asksaveasfile return `None` if dialog closed with "cancel".
@@ -53,8 +61,7 @@ def file_save():
     text2save = str(text.get(1.0, END)) # starts from `1.0`, not `0.0`
     f.write(text2save)
     f.close() # `()` was missing.
-
-PATH_TO_INPUT = ''
+"""
 
 root = Tk()
 menu = Menu(root)
@@ -63,7 +70,7 @@ root.config(menu=menu)
 fileMenu = Menu(menu)
 menu.add_cascade(label="File", menu=fileMenu)
 fileMenu.add_command(label="Open", command=callback)
-fileMenu.add_command(label="Save", command=file_save)
+#fileMenu.add_command(label="Save", command=file_save)
 fileMenu.add_separator()
 fileMenu.add_command(label="Exit", command=root.quit)
 
