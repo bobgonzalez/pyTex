@@ -13,6 +13,7 @@ from help_me import help_me
     *TODO: implement file save
     *TODO: redirect compile to buffer window
     *TODO: split buffer frame into buffer 75% left help 25% right
+    *TODO: add 'spell check' button that runs aspell in buffer frame
 """
 
 
