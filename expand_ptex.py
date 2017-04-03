@@ -5,7 +5,6 @@ from subprocess import call
 from token_check import token_check
 from micro_exp import MicroExpressions
 """
-    *TODO: handle empty lines
     *TODO: after successful compilation help command does not print to buffer
     *TODO: support tables
     **TODO: flag for explicit filename extensions
