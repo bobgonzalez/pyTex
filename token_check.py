@@ -10,5 +10,11 @@ def token_check(line1):
     for i, token in enumerate(sp_line):
         if token[0:2] == "B{":
             sp_line[i] = "\\textbf" + str(token[1:])
+        elif token[0:2] == "I{":
+            sp_line[i] = "\\textit" + str(token[1:])
+        elif token[0:2] == "->":
+            sp_line[i] = "$\\rightarrow$"
+        elif token[0:2] == "-->":
+            sp_line[i] = "$\\longrightarrow$"
     new_line = ' '.join(sp_line)
     return new_line
