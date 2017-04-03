@@ -1,7 +1,7 @@
 """
 WISH_LIST_OF_INLINE_MICROEXPRESSIONS:
         - arrows (-> --> <- <-- => ==> <= <==)
-        - textsc{} I{} (italicize)
+        - textit{} I{} (italicize)
 """
 
 
