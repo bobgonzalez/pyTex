@@ -1,3 +1,10 @@
+"""
+WISH_LIST_OF_INLINE_MICROEXPRESSIONS:
+        - arrows (-> --> <- <-- => ==> <= <==)
+        - textsc{} I{} (italicize)
+"""
+
+
 def token_check(line1):
     sp_line = line1.split()
     for i, token in enumerate(sp_line):
