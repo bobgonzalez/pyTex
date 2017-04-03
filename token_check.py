@@ -23,11 +23,14 @@ def token_check(line1):
             sp_line[i] = "$\\Rightarrow$"
         elif token[0:3] == "==>":
             sp_line[i] = "$\\Longrightarrow$"
+        elif token[0:3] == "<=>":
+            sp_line[i] = "$\\Leftrightarrow$"
         elif token[0:2] == "<=":
             sp_line[i] = "$\\Leftarrow$"
         elif token[0:3] == "<==":
             sp_line[i] = "$\\Longleftarrow$"
-        elif token[0:3] == "<=>":
-            sp_line[i] = "$\\Leftrightarrow$"
+        elif token[0:3] == "|->":
+            sp_line[i] = "$\\mapsto$"
+
     new_line = ' '.join(sp_line)
     return new_line
