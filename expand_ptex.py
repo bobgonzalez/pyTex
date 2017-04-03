@@ -29,12 +29,13 @@ def init(file_name):
     me = MicroExpressions()
     for line in text_file:
         row = line.split()
-        for op in me.exps:
-            if op.macro == row[0]:
-                print(op.handler(line))
-                break
-        else:
-            print(token_check(line))
+        if line.strip():
+            for op in me.exps:
+                if op.macro == row[0]:
+                    print(op.handler(line))
+                    break
+            else:
+                print(token_check(line))
 
     print("\n\\end{document}")
     text_file.close()
