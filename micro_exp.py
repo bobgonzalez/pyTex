@@ -3,7 +3,7 @@ from token_check import token_check
 WISH_LIST_OF_MICROEXPRESSIONS:
         - BP + EP -> begin / end proof / theorem / lemma / corollary
         - TLINE -> \\ \hline
-        - BT + ET -> begin table center tabular end where BT takes in '|l|l|' parameter to tabular
+        - BTAB + ETAB -> begin table center tabular end where BT takes in '|l|l|' parameter to tabular
         - IG -> print this line as is (ignore micro-expressions)
 """
 
@@ -12,7 +12,7 @@ class MicroExpressions():
     def __init__(self):
         self.exps = [Exp17(), Exp0(), Exp1(), Exp2(), Exp3(), Exp4(), Exp5(), Exp6(),
                      Exp7(), Exp8(), Exp9(), Exp10(), Exp11(), Exp12(), Exp13(),
-                     Exp14(), Exp15(), Exp16(), Exp18()]
+                     Exp14(), Exp15(), Exp16(), Exp18(), Exp19(), Exp20(), Exp21(), Exp22()]
 
 
 class Exp():
@@ -189,3 +189,35 @@ class Exp18(Exp):
 
     def handler(self, line):
         return line[4:]
+
+
+class Exp19(Exp):
+    def __init__(self):
+        Exp.__init__(self, "BT")
+
+    def handler(self, line):
+        return str("\\textbf{Theorem :} \n\\begin{displayquote}")
+
+
+class Exp20(Exp):
+    def __init__(self):
+        Exp.__init__(self, "ET")
+
+    def handler(self, line):
+        return str("\\end{displayquote}")
+
+
+class Exp21(Exp):
+    def __init__(self):
+        Exp.__init__(self, "BP")
+
+    def handler(self, line):
+        return str("\\textbf{Proof :} \n\\begin{displayquote}")
+
+
+class Exp22(Exp):
+    def __init__(self):
+        Exp.__init__(self, "EP")
+
+    def handler(self, line):
+        return str("\\end{displayquote}")
