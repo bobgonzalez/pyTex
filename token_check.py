@@ -11,6 +11,8 @@ def token_check(line1):
             sp_line[i] = "\\textbf" + str(token[1:])
         elif token[0:2] == "I{":
             sp_line[i] = "\\textit" + str(token[1:])
+        elif token[0:2] == "S{":
+            sp_line[i] = "\\textsf" + str(token[1:])
         elif token[0:2] == "->":
             sp_line[i] = "$\\rightarrow$"
         elif token[0:3] == "-->":
@@ -19,6 +21,8 @@ def token_check(line1):
             sp_line[i] = "$\\longleftarrow$"
         elif token[0:2] == "<-":
             sp_line[i] = "$\\leftarrow$"
+        elif token[0:3] == "=>*":
+            sp_line[i] = "$\\Rightarrow^*$"
         elif token[0:2] == "=>":
             sp_line[i] = "$\\Rightarrow$"
         elif token[0:3] == "==>":
