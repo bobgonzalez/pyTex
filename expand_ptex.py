@@ -6,9 +6,7 @@ from token_check import token_check
 from micro_exp import MicroExpressions
 """
     *TODO: after successful compilation help command does not print to buffer
-    *TODO: support tables
     **TODO: flag for explicit filename extensions
-    **TODO: adjust vertical spacing of LINE
 """
 
 def init(file_name):
@@ -21,7 +19,7 @@ def init(file_name):
               "Please enter file in local directory or absolute path to file.")
         return
     sys.stdout = open(out, 'w')
-    file_name = file_name.replace("_", "\\_")
+    #file_name = file_name.replace("_", "\\_")
 
     print(make_header())
     #print(make_title(file_name))
