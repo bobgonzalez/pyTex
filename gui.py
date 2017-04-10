@@ -1,10 +1,15 @@
 #!/usr/bin/python
 from Tkinter import *
 from tkFileDialog import askopenfilename
-from PIL import Image, ImageTk                   #sudo apt-get install python-imaging-tk
+from PIL import Image, ImageTk  #sudo apt-get install python-imaging-tk
 from expand_ptex import init as compile_me
 from help_me import help_me
+import ttk
 #import tkFileDialog
+from img_proc import *
+
+
+
 """
     *TODO: add check box for optional make title
     *TODO: move from .pack() to .grid()
@@ -35,6 +40,7 @@ class Redirector(object):
         button = Button(self.parent, text="Help", command=self.main_help)
         button.pack(side=BOTTOM)
 
+
     def main(self):
         print compile_me(self.input_f)
 
@@ -54,6 +60,41 @@ def callback():
         content = x.read()
     L1.insert(INSERT, content)
 
+#change this to another pdf if testing
+def pdftest():
+    pdf2jpg("proj02-v5.pdf")
+
+counter = 0
+
+#> button
+def show_image1():
+    canvas.delete("all")
+    image1 = ImageTk.PhotoImage(img_list[counter])
+    canvas.create_image(0,0, anchor='nw',image=image1)
+    canvas.image = image1
+    global counter
+    if counter == len(img_list)-1:
+        counter = 0
+    else:
+        counter = counter + 1
+    #print "in > button, counter is: " , counter
+
+#< button
+def show_image2():
+    canvas.delete("all")
+    image2 = ImageTk.PhotoImage(img_list[counter])
+    canvas.create_image(0,0, anchor='nw',image=image2)
+    canvas.image = image2
+    global counter
+    if counter == 0:
+        counter = len(img_list)-1
+    else:
+        counter = counter - 1
+    #print "in < button, counter is: " , counter
+
+
+
+
 """
 def file_save():
     f = tkFileDialog.asksaveasfile(mode='w', defaultextension=".txt")
@@ -64,16 +105,36 @@ def file_save():
     f.close() # `()` was missing.
 """
 
+
 root = Tk()
 menu = Menu(root)
 gui = Redirector(root)
 root.config(menu=menu)
 fileMenu = Menu(menu)
+canvas = Canvas(height=500, width=800)
+canvas.pack(side=RIGHT, fill=BOTH, expand=YES)
+
+
 menu.add_cascade(label="File", menu=fileMenu)
 fileMenu.add_command(label="Open", command=callback)
 #fileMenu.add_command(label="Save", command=file_save)
 fileMenu.add_separator()
 fileMenu.add_command(label="Exit", command=root.quit)
+
+
+#testing
+pdf2jpg("proj02-v5.pdf")
+global img_list
+img_list = get_jpegs()
+#print img_list
+
+b1=Button(root, text=">", command=show_image1)
+b1.pack(side=RIGHT)
+b2=Button(root, text="<", command=show_image2)
+b2.pack(side=RIGHT)
+
+
+
 
 
 '''left window for text entry'''
@@ -85,11 +146,12 @@ L1.pack(side=LEFT, fill=BOTH, expand=YES)
 img1 = Image.open("test.jpg")
 img1 = img1.resize((500, 800), Image.ANTIALIAS)
 img = ImageTk.PhotoImage(img1)
-panel = Label(root, image=img)
-panel.pack(side=RIGHT, fill=BOTH, expand=YES)
+#panel = Label(root, image=img)
+#panel.pack(side=RIGHT, fill=BOTH, expand=YES)
 
 '''open window'''
 root.mainloop()
+
 
 
 
