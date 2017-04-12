@@ -45,6 +45,7 @@ class Redirector(object):
         button.grid(row=5,column=2,sticky=E+W)
 
     def main(self, *args):
+        file_save2()
         print compile_me(self.input_f, StdoutRedirector(self.text_box))
         reverse = self.input_f[::-1]
         a = reverse.index('/')
@@ -125,6 +126,14 @@ def file_save(*args):
     f.close() # `()` was missing.
 
 
+def file_save2(*args):
+    f = open(gui.input_f, 'w')
+    if f is None: # asksaveasfile return `None` if dialog closed with "cancel".
+        return
+    text2save = str(L1.get(1.0, END)) # starts from `1.0`, not `0.0`
+    f.write(text2save)
+    f.close() # `()` was missing.
+
 
 root = Tk()
 root.grid()
@@ -145,6 +154,7 @@ scroll_bar_left.grid(sticky = E+N+S, row = 0, column = 2, rowspan = 5, columnspa
 
 menu.add_cascade(label="File", menu=fileMenu)
 fileMenu.add_command(label="Open", command=callback, accelerator="Ctrl+o")
+fileMenu.add_command(label="Save ", command=file_save2)
 fileMenu.add_command(label="Save as", command=file_save, accelerator="Ctrl+s")
 fileMenu.add_separator()
 fileMenu.add_command(label="Exit", command=root.quit)
