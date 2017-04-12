@@ -9,7 +9,7 @@ from micro_exp import MicroExpressions
     **TODO: flag for explicit filename extensions
 """
 
-def init(file_name):
+def init(file_name, *args):
     #file_name = sys.argv[1]
     out = file_name.replace(".txt", ".tex")
     try:
@@ -36,7 +36,8 @@ def init(file_name):
 
     print("\n\\end{document}")
     text_file.close()
-    sys.stdout = sys.__stdout__
+    for R in args:
+        sys.stdout = R
     call(["pdflatex", str(out)])
 
 
