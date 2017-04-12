@@ -30,6 +30,7 @@ class StdoutRedirector(object):
         self.text_space.insert('end', string)
         self.text_space.see('end')
 
+
 class Redirector(object):
     def __init__(self, parent):
         self.parent = parent
@@ -40,9 +41,17 @@ class Redirector(object):
         button = Button(self.parent, text="Help", command=self.main_help)
         button.pack(side=BOTTOM)
 
-
     def main(self):
         print compile_me(self.input_f)
+        reverse = self.input_f[::-1]
+        a = reverse.index('/')
+        reverse = reverse[:a]
+        reverse = reverse[::-1]
+        clear_jpegs()
+        pdf2jpg(reverse[:-3]+"pdf")
+        global img_list
+        img_list = []
+        img_list = get_jpegs()
 
     def main_help(self):
         print help_me()
@@ -60,14 +69,11 @@ def callback():
         content = x.read()
     L1.insert(INSERT, content)
 
-#change this to another pdf if testing
-def pdftest():
-    pdf2jpg("proj02-v5.pdf")
-
 counter = 0
 
-#> button
+
 def show_image1():
+    """ > button """
     canvas.delete("all")
     image1 = ImageTk.PhotoImage(img_list[counter])
     canvas.create_image(0,0, anchor='nw',image=image1)
@@ -79,9 +85,11 @@ def show_image1():
         counter = counter + 1
     #print "in > button, counter is: " , counter
 
-#< button
+
 def show_image2():
+    """ < button """
     canvas.delete("all")
+    #image2 = ImageTk.PhotoImage(img_list[counter].resize((800, 1100), Image.NEAREST))
     image2 = ImageTk.PhotoImage(img_list[counter])
     canvas.create_image(0,0, anchor='nw',image=image2)
     canvas.image = image2
@@ -91,8 +99,6 @@ def show_image2():
     else:
         counter = counter - 1
     #print "in < button, counter is: " , counter
-
-
 
 
 """
@@ -114,27 +120,18 @@ fileMenu = Menu(menu)
 canvas = Canvas(height=500, width=800)
 canvas.pack(side=RIGHT, fill=BOTH, expand=YES)
 
-
 menu.add_cascade(label="File", menu=fileMenu)
 fileMenu.add_command(label="Open", command=callback)
 #fileMenu.add_command(label="Save", command=file_save)
 fileMenu.add_separator()
 fileMenu.add_command(label="Exit", command=root.quit)
 
-
-#testing
-pdf2jpg("proj02-v5.pdf")
 global img_list
-img_list = get_jpegs()
-#print img_list
 
-b1=Button(root, text=">", command=show_image1)
+b1 = Button(root, text=">", command=show_image1)
 b1.pack(side=RIGHT)
-b2=Button(root, text="<", command=show_image2)
+b2 = Button(root, text="<", command=show_image2)
 b2.pack(side=RIGHT)
-
-
-
 
 
 '''left window for text entry'''
