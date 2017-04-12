@@ -1,4 +1,4 @@
 # pyTex
-pyTex is a python program that takes an input \*.txt file and the resulting \*.tex by expanding a set of aliases that must be the first word on a line into their respective LaTex expression.
+pyTex expands a growing set of mnemonic micro-expressions into LaTex and compiles the respective *.tex into a pdf with pdflatex. A WYSIWYG GUI is currently under development. 
 
 <p align="center"><img src ="https://i.imgur.com/ij4rawb.png" /></p>
