@@ -5,7 +5,7 @@ from PIL import Image, ImageTk  #sudo apt-get install python-imaging-tk
 from expand_ptex import init as compile_me
 from help_me import help_me
 import ttk
-#import tkFileDialog
+import tkFileDialog
 from img_proc import *
 
 
@@ -116,15 +116,14 @@ def show_image2():
     #print "in < button, counter is: " , counter
 
 
-"""
-def file_save():
+def file_save(*args):
     f = tkFileDialog.asksaveasfile(mode='w', defaultextension=".txt")
     if f is None: # asksaveasfile return `None` if dialog closed with "cancel".
         return
-    text2save = str(text.get(1.0, END)) # starts from `1.0`, not `0.0`
+    text2save = str(L1.get(1.0, END)) # starts from `1.0`, not `0.0`
     f.write(text2save)
     f.close() # `()` was missing.
-"""
+
 
 
 root = Tk()
@@ -146,11 +145,12 @@ scroll_bar_left.grid(sticky = E+N+S, row = 0, column = 2, rowspan = 5, columnspa
 
 menu.add_cascade(label="File", menu=fileMenu)
 fileMenu.add_command(label="Open", command=callback, accelerator="Ctrl+o")
-#fileMenu.add_command(label="Save", command=file_save)
+fileMenu.add_command(label="Save as", command=file_save, accelerator="Ctrl+s")
 fileMenu.add_separator()
 fileMenu.add_command(label="Exit", command=root.quit)
 root.bind_all("<Control-o>", callback)
 root.bind_all("<Control-c>", gui.main)
+root.bind_all("<Control-s>", file_save)
 global img_list
 
 b1 = Button(root, text=">", command=show_image1)
