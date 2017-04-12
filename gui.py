@@ -14,7 +14,6 @@ from img_proc import *
     *TODO: add check box for optional make title
     *TODO: move from .pack() to .grid()
     *TODO: zoom buttons for viewer frame
-    *TODO: file open concatenates the new file to the end of the old file in the editor
     *TODO: implement file save
     *TODO: redirect compile to buffer window
     *TODO: split buffer frame into buffer 75% left help 25% right
@@ -79,6 +78,7 @@ class Redirector(object):
 def callback(*args):
     name = askopenfilename()
     gui.input_f = name
+    L1.delete('1.0', END)
     with open(name, 'r') as x:
         content = x.read()
     L1.insert(INSERT, content)
@@ -141,6 +141,8 @@ for c in range(5):
     root.columnconfigure(c, weight=1)
 
 canvas.grid(row = 0, column = 2, rowspan = 5, columnspan = 3, sticky = W+E+N+S)
+scroll_bar_left = Scrollbar(root, orient="vertical", command=canvas.yview)
+scroll_bar_left.grid(sticky = E+N+S, row = 0, column = 2, rowspan = 5, columnspan = 3)
 
 menu.add_cascade(label="File", menu=fileMenu)
 fileMenu.add_command(label="Open", command=callback, accelerator="Ctrl+o")
