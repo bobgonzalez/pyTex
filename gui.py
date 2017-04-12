@@ -20,6 +20,8 @@ from img_proc import *
     *TODO: split buffer frame into buffer 75% left help 25% right
     *TODO: add 'spell check' button that runs aspell in buffer frame
 """
+# s = ttk.Style()
+# s.theme_use('alt')
 
 
 class StdoutRedirector(object):
@@ -37,11 +39,11 @@ class Redirector(object):
         self.InitUI()
         self.input_f = ''
         button = Button(self.parent, text="Compile", command=self.main)
-        button.pack(side=BOTTOM)
+        button.grid(row=5,column=0,sticky=E+W)
         button = Button(self.parent, text="Help", command=self.main_help)
-        button.pack(side=BOTTOM)
+        button.grid(row=5,column=1,sticky=E+W)
         button = Button(self.parent, text="Resize", command=self.resize)
-        button.pack(side=BOTTOM)
+        button.grid(row=5,column=2,sticky=E+W)
 
     def main(self, *args):
         print compile_me(self.input_f, StdoutRedirector(self.text_box))
@@ -70,7 +72,7 @@ class Redirector(object):
 
     def InitUI(self):
         self.text_box = Text(self.parent, bd=5)
-        self.text_box.pack(side=BOTTOM, fill=BOTH, expand=YES)
+        self.text_box.grid(row = 6, column = 0, rowspan = 1, columnspan = 6, sticky = W+E+N+S)
         sys.stdout = StdoutRedirector(self.text_box)
 
 
@@ -126,12 +128,19 @@ def file_save():
 
 
 root = Tk()
+root.grid()
 menu = Menu(root)
 gui = Redirector(root)
 root.config(menu=menu)
 fileMenu = Menu(menu)
 canvas = Canvas(height=500, width=800)
-canvas.pack(side=RIGHT, fill=BOTH, expand=YES)
+
+for r in range(6):
+    root.rowconfigure(r, weight=1)
+for c in range(5):
+    root.columnconfigure(c, weight=1)
+
+canvas.grid(row = 0, column = 2, rowspan = 5, columnspan = 3, sticky = W+E+N+S)
 
 menu.add_cascade(label="File", menu=fileMenu)
 fileMenu.add_command(label="Open", command=callback, accelerator="Ctrl+o")
@@ -143,22 +152,15 @@ root.bind_all("<Control-c>", gui.main)
 global img_list
 
 b1 = Button(root, text=">", command=show_image1)
-b1.pack(side=RIGHT)
+b1.grid(row=5,column=4,sticky=E+W)
 b2 = Button(root, text="<", command=show_image2)
-b2.pack(side=RIGHT)
+b2.grid(row=5,column=3,sticky=E+W)
 
 
 '''left window for text entry'''
 L1 = Text(root, bd=5)
-L1.pack(side=LEFT, fill=BOTH, expand=YES)
+L1.grid(row = 0, column = 0, rowspan = 5, columnspan = 2, sticky = W+E+N+S)
 
-'''right window for jpeg (just test file right now)'''
-''' TODO : create buttons for zooming in and out '''
-img1 = Image.open("test.jpg")
-img1 = img1.resize((500, 800), Image.ANTIALIAS)
-img = ImageTk.PhotoImage(img1)
-#panel = Label(root, image=img)
-#panel.pack(side=RIGHT, fill=BOTH, expand=YES)
 
 '''open window'''
 root.mainloop()
