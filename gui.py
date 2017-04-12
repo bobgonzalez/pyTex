@@ -40,6 +40,8 @@ class Redirector(object):
         button.pack(side=BOTTOM)
         button = Button(self.parent, text="Help", command=self.main_help)
         button.pack(side=BOTTOM)
+        button = Button(self.parent, text="Resize", command=self.resize)
+        button.pack(side=BOTTOM)
 
     def main(self):
         print compile_me(self.input_f)
@@ -55,6 +57,12 @@ class Redirector(object):
 
     def main_help(self):
         print help_me()
+
+    def resize(self):
+        canvas.delete("all")
+        image2 = ImageTk.PhotoImage(img_list[counter].resize((800, 1100), Image.NEAREST))
+        canvas.create_image(0, 0, anchor='nw', image=image2)
+        canvas.image = image2
 
     def InitUI(self):
         self.text_box = Text(self.parent, bd=5)
