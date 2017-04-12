@@ -17,69 +17,77 @@ from PIL import Image as pilImage
 
 
 '''--------------------------FUNCTIONS--------------------------'''
+
+
 def pdf2jpg(filepath):
-	"""
-	Description: Convert a single/multi-page PDF document into JPEGs saved in the ./TMP directory.
-	Parameters: 1
-		filepath: String, Path to PDF document 
-	Return: 0
-		-:-
-	"""
-	try:
-		with wandImage(filename=filepath) as img:
-			img.save(filename="./TMP/"+filepath[:-3]+"jpg")
-	except MissingDelegateError:
-		print("\n\nFile entered is not a pdf file!\nOr imagemagick is not installed: brew install imagemagick\n\n")
-	
+    """
+    Description: Convert a single/multi-page PDF document into JPEGs saved in the ./TMP directory.
+    Parameters: 1
+        filepath: String, Path to PDF document
+    Return: 0
+        -:-
+    """
+    try:
+        with wandImage(filename=filepath, resolution=300) as img:
+            img.compression_quality = 100
+            img.save(filename="./TMP/"+filepath[:-3]+"jpg")
+    except MissingDelegateError:
+        print("\n\nFile entered is not a pdf file!\nOr imagemagick is not installed: brew install imagemagick\n\n")
+
+
 def resize(x, y):
-	"""
-	Description: Resize all JPEGs currently in the ./TMP directory.
-	Parameters: 2
-		x: INT, desired x dimension 
-		y: INT, desired y dimension		
-	Return: 0
-		-:-
-	"""
-	try:
-		for file in os.listdir("./TMP"):
-			img = wandImage(filename="./TMP/"+file)
-			img.resize(x,y)
-			img.save(filename="./TMP/"+file) 
-	except:
-		print("Error resizing.")
+    """
+    Description: Resize all JPEGs currently in the ./TMP directory.
+    Parameters: 2
+        x: INT, desired x dimension
+        y: INT, desired y dimension
+    Return: 0
+        -:-
+    """
+    try:
+        for file in listdir("./TMP"):
+            img = wandImage(filename="./TMP/"+file, resolution=300)
+            img.compression_quality = 100
+            img.resize(x,y)
+            img.save(filename="./TMP/"+file)
+    except:
+        print("Error resizing.")
+
 
 def get_jpegs():
-	"""
-	Description: Gather all JPEGs currently in the ./TMP directory.
-	Parameters: 0
-		-:-
-	Return: 1
-		-: List containing PIL.image Image objects for each JPEG 
-	"""
-	return [pilImage.open("./TMP/"+file) for file in listdir("./TMP") ]
+    """
+    Description: Gather all JPEGs currently in the ./TMP directory.
+    Parameters: 0
+        -:-
+    Return: 1
+        -: List containing PIL.image Image objects for each JPEG
+    """
+    return [pilImage.open("./TMP/"+file) for file in listdir("./TMP") ]
+
 
 def clear_jpegs():
-	"""
-	Description:Remove all JPEGs currently in the ./TMP directory.
-	Parameters: 0
-		-:-
-	Return: 0
-		-:-
-	"""
-	for file in os.listdir("./TMP"):
-		remove("./TMP/"+file)
+    """
+    Description:Remove all JPEGs currently in the ./TMP directory.
+    Parameters: 0
+        -:-
+    Return: 0
+        -:-
+    """
+    for file in listdir("./TMP"):
+        remove("./TMP/"+file)
 '''--------------------------FUNCTIONS--------------------------'''
 
 
 '''--------------------------DEBUGGING--------------------------'''
+
+
 def debug():
-	print("\nDebugging...\n")	
-	#Insert function calls here
-	pdf2jpg("./BITSCTF_Mis_Labour_20_Feb17.pdf")
-	print get_jpegs()
-	print("\n...Done debugging.\n")	
-		
+    print("\nDebugging...\n")
+    #Insert function calls here
+    pdf2jpg("./BITSCTF_Mis_Labour_20_Feb17.pdf")
+    print get_jpegs()
+    print("\n...Done debugging.\n")
+
 if __name__ == "__main__":
-	debug()
+    debug()
 '''--------------------------DEBUGGING--------------------------'''
-		
