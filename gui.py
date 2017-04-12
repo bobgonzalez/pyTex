@@ -7,6 +7,7 @@ from help_me import help_me
 import ttk
 import tkFileDialog
 from img_proc import *
+import os
 
 
 
@@ -21,6 +22,17 @@ from img_proc import *
 """
 # s = ttk.Style()
 # s.theme_use('alt')
+
+"""
+class StatusBar(Frame):
+    def __init__(self, master):
+        Frame.__init__(self, master)
+        self.variable = StringVar()
+        self.label = Label(self, bd=1, relief=SUNKEN, anchor=W, textvariable=self.variable, font=('arial', 16, 'normal'))
+        self.variable.set('Status Bar')
+        self.label.grid(row=6)
+        self.grid(row=6, column=0, sticky=S)
+"""
 
 
 class StdoutRedirector(object):
@@ -38,11 +50,11 @@ class Redirector(object):
         self.InitUI()
         self.input_f = ''
         button = Button(self.parent, text="Compile", command=self.main)
-        button.grid(row=5,column=0,sticky=E+W)
-        button = Button(self.parent, text="Help", command=self.main_help)
-        button.grid(row=5,column=1,sticky=E+W)
-        button = Button(self.parent, text="Resize", command=self.resize)
-        button.grid(row=5,column=2,sticky=E+W)
+        button.grid(row=7,column=0,sticky=E+W)
+        button = Button(self.parent, text="aspell -c -n", command=self.spell)
+        button.grid(row=7,column=1,sticky=E+W)
+        #button = Button(self.parent, text="Spell Check", command=self.spell)
+        #button.grid(row=5,column=2,sticky=E+W)
 
     def main(self, *args):
         file_save2()
@@ -64,15 +76,26 @@ class Redirector(object):
     def main_help(self):
         print help_me()
 
-    def resize(self):
+    def spell(self):
+        id = "New window "
+        window = Tk()
+        termf = Frame(window, height=400, width=500)
+        termf.pack(fill=BOTH, expand=YES)
+        wid = termf.winfo_id()
+        os.system('xterm -into %d -geometry 400x500 -sb &' % wid)
+        """
         canvas.delete("all")
         image2 = ImageTk.PhotoImage(img_list[counter].resize((800, 1100), Image.NEAREST))
         canvas.create_image(0, 0, anchor='nw', image=image2)
         canvas.image = image2
+        """
 
     def InitUI(self):
         self.text_box = Text(self.parent, bd=5)
-        self.text_box.grid(row = 6, column = 0, rowspan = 1, columnspan = 6, sticky = W+E+N+S)
+        self.text_box.grid(row=8, column = 0, rowspan = 1, columnspan = 6, sticky = W+E+N+S)
+        self.text_box2 = Text(self.parent, bd=5)
+        self.text_box2.grid(row=8, column=6, rowspan=1, columnspan=4, sticky=W + E + N + S)
+        self.text_box2.insert(END, help_me())
         sys.stdout = StdoutRedirector(self.text_box)
 
 
@@ -138,19 +161,20 @@ def file_save2(*args):
 root = Tk()
 root.grid()
 menu = Menu(root)
+#d = StatusBar(root)
 gui = Redirector(root)
 root.config(menu=menu)
 fileMenu = Menu(menu)
 canvas = Canvas(height=500, width=800)
 
-for r in range(6):
+for r in range(10):
     root.rowconfigure(r, weight=1)
-for c in range(5):
+for c in range(10):
     root.columnconfigure(c, weight=1)
 
-canvas.grid(row = 0, column = 2, rowspan = 5, columnspan = 3, sticky = W+E+N+S)
+canvas.grid(row = 0, column = 3, rowspan = 7, columnspan = 7, sticky = W+E+N+S)
 scroll_bar_left = Scrollbar(root, orient="vertical", command=canvas.yview)
-scroll_bar_left.grid(sticky = E+N+S, row = 0, column = 2, rowspan = 5, columnspan = 3)
+scroll_bar_left.grid(sticky = E+N+S, row = 0, column = 9, rowspan = 7, columnspan = 1)
 
 menu.add_cascade(label="File", menu=fileMenu)
 fileMenu.add_command(label="Open", command=callback, accelerator="Ctrl+o")
@@ -164,14 +188,14 @@ root.bind_all("<Control-s>", file_save)
 global img_list
 
 b1 = Button(root, text=">", command=show_image1)
-b1.grid(row=5,column=4,sticky=E+W)
+b1.grid(row=7,column=7,sticky=E+W)
 b2 = Button(root, text="<", command=show_image2)
-b2.grid(row=5,column=3,sticky=E+W)
+b2.grid(row=7,column=6,sticky=E+W)
 
 
 '''left window for text entry'''
 L1 = Text(root, bd=5)
-L1.grid(row = 0, column = 0, rowspan = 5, columnspan = 2, sticky = W+E+N+S)
+L1.grid(row = 0, column = 0, rowspan = 7, columnspan = 3, sticky = W+E+N+S)
 
 
 '''open window'''
