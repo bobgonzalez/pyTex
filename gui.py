@@ -43,8 +43,8 @@ class Redirector(object):
         button = Button(self.parent, text="Resize", command=self.resize)
         button.pack(side=BOTTOM)
 
-    def main(self):
-        print compile_me(self.input_f)
+    def main(self, *args):
+        print compile_me(self.input_f, StdoutRedirector(self.text_box))
         reverse = self.input_f[::-1]
         a = reverse.index('/')
         reverse = reverse[:a]
@@ -54,6 +54,10 @@ class Redirector(object):
         global img_list
         img_list = []
         img_list = get_jpegs()
+        canvas.delete("all")
+        image2 = ImageTk.PhotoImage(img_list[counter].resize((800, 1100), Image.NEAREST))
+        canvas.create_image(0, 0, anchor='nw', image=image2)
+        canvas.image = image2
 
     def main_help(self):
         print help_me()
@@ -70,12 +74,13 @@ class Redirector(object):
         sys.stdout = StdoutRedirector(self.text_box)
 
 
-def callback():
+def callback(*args):
     name = askopenfilename()
     gui.input_f = name
     with open(name, 'r') as x:
         content = x.read()
     L1.insert(INSERT, content)
+
 
 counter = 0
 
@@ -129,11 +134,12 @@ canvas = Canvas(height=500, width=800)
 canvas.pack(side=RIGHT, fill=BOTH, expand=YES)
 
 menu.add_cascade(label="File", menu=fileMenu)
-fileMenu.add_command(label="Open", command=callback)
+fileMenu.add_command(label="Open", command=callback, accelerator="Ctrl+o")
 #fileMenu.add_command(label="Save", command=file_save)
 fileMenu.add_separator()
 fileMenu.add_command(label="Exit", command=root.quit)
-
+root.bind_all("<Control-o>", callback)
+root.bind_all("<Control-c>", gui.main)
 global img_list
 
 b1 = Button(root, text=">", command=show_image1)
