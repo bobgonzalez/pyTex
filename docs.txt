@@ -10,4 +10,3 @@ SS The help command:
 BB
 python pytex.py -h \quad or \quad python pytex.py --help
 EB
-FIG 75 word_vs_latex Word v.s. Latex
