@@ -92,9 +92,9 @@ class Redirector(object):
 
     def InitUI(self):
         self.text_box = Text(self.parent, bd=5)
-        self.text_box.grid(row=9, column = 0, rowspan = 1, columnspan = 6, sticky = W+E+S)
+        self.text_box.grid(row=9, column=0, rowspan=1, columnspan=6, sticky=W+E+N+S)
         self.text_box2 = Text(self.parent, bd=5)
-        self.text_box2.grid(row=9, column=6, rowspan=1, columnspan=4, sticky=W + E + S)
+        self.text_box2.grid(row=9, column=6, rowspan=1, columnspan=4, sticky=W+E+N+S)
         self.text_box2.insert(END, help_me())
         sys.stdout = StdoutRedirector(self.text_box)
 
