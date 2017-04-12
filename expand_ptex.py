@@ -1,7 +1,7 @@
 from __future__ import print_function
 import sys
 from datetime import date
-from subprocess import call
+from subprocess import call, Popen, PIPE, STDOUT
 from token_check import token_check
 from micro_exp import MicroExpressions
 """
@@ -38,7 +38,17 @@ def init(file_name, *args):
     text_file.close()
     for R in args:
         sys.stdout = R
-    call(["pdflatex", str(out)])
+    p = Popen(str("pdflatex " + str(out)), stdout=PIPE, stdin=PIPE, stderr=STDOUT, shell=True)
+
+    while True:
+        line = p.stdout.readline()
+        print(line)
+        # r = raw_input()
+        # p.stdin.write('\n')
+        if not line:
+            break
+
+            # call(["pdflatex", str(out)])
 
 
 def make_header():
