@@ -47,16 +47,24 @@ class StdoutRedirector(object):
 class Redirector(object):
     def __init__(self, parent):
         self.parent = parent
-        self.InitUI()
+        self.text_box = Text(self.parent, bd=5)
+        self.text_box.grid(row=9, column=0, rowspan=1, columnspan=6, sticky=W + E + N + S)
+        self.text_box2 = Text(self.parent, bd=5)
+        self.text_box2.grid(row=9, column=6, rowspan=1, columnspan=4, sticky=W + E + N + S)
+        self.text_box2.insert(END, help_me())
+        sys.stdout = StdoutRedirector(self.text_box)
         self.input_f = ''
         button = Button(self.parent, text="Compile", command=self.main)
         button.grid(row=8,column=0,sticky=E+W)
-        button = Button(self.parent, text="aspell -c -n", command=self.spell)
+        button = Button(self.parent, text="Terminal", command=self.term)
         button.grid(row=8,column=1,sticky=E+W)
         #button = Button(self.parent, text="Spell Check", command=self.spell)
         #button.grid(row=5,column=2,sticky=E+W)
 
     def main(self, *args):
+        self.text_box = Text(self.parent, bd=5)
+        self.text_box.grid(row=9, column=0, rowspan=1, columnspan=6, sticky=W + E + N + S)
+        sys.stdout = StdoutRedirector(self.text_box)
         file_save2()
         print compile_me(self.input_f, StdoutRedirector(self.text_box))
         reverse = self.input_f[::-1]
@@ -97,6 +105,12 @@ class Redirector(object):
         self.text_box2.grid(row=9, column=6, rowspan=1, columnspan=4, sticky=W+E+N+S)
         self.text_box2.insert(END, help_me())
         sys.stdout = StdoutRedirector(self.text_box)
+
+    def term(self, *args):
+        self.text_box = Frame(self.parent, height=20, width=40)
+        self.text_box.grid(row=9, column=0, rowspan=1, columnspan=6, sticky=W + E + N + S)
+        wid = self.text_box.winfo_id()
+        os.system('xterm -into %d -geometry 400x500 -sb &' % wid)
 
 
 def callback(*args):
@@ -197,6 +211,7 @@ menu.add_cascade(label="Edit", menu=editMenu)
 editMenu.add_command(label="Micro-Exps", command=open_exp)
 root.bind_all("<Control-o>", callback)
 root.bind_all("<Control-c>", gui.main)
+root.bind_all("<Control-t>", gui.term)
 root.bind_all("<Control-s>", file_save)
 global img_list
 
@@ -204,7 +219,8 @@ b1 = Button(root, text=">", command=show_image1)
 b1.grid(row=8,column=7,sticky=E+W)
 b2 = Button(root, text="<", command=show_image2)
 b2.grid(row=8,column=6,sticky=E+W)
-
+#b2 = Button(root, text="term", command=term)
+#b2.grid(row=8,column=4,sticky=E+W)
 
 '''left window for text entry'''
 L1 = Text(root, bd=5)
