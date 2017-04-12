@@ -69,7 +69,7 @@ class Redirector(object):
         img_list = []
         img_list = get_jpegs()
         canvas.delete("all")
-        image2 = ImageTk.PhotoImage(img_list[counter].resize((800, 1100), Image.NEAREST))
+        image2 = ImageTk.PhotoImage(img_list[counter].resize((1200, 1600), Image.NEAREST))
         canvas.create_image(0, 0, anchor='nw', image=image2)
         canvas.image = image2
 
@@ -101,6 +101,15 @@ class Redirector(object):
 
 def callback(*args):
     name = askopenfilename()
+    gui.input_f = name
+    L1.delete('1.0', END)
+    with open(name, 'r') as x:
+        content = x.read()
+    L1.insert(INSERT, content)
+
+
+def open_exp(*args):
+    name = 'micro_exp.py'
     gui.input_f = name
     L1.delete('1.0', END)
     with open(name, 'r') as x:
@@ -165,6 +174,8 @@ menu = Menu(root)
 gui = Redirector(root)
 root.config(menu=menu)
 fileMenu = Menu(menu)
+editMenu = Menu(menu)
+
 canvas = Canvas(height=500, width=800)
 
 for r in range(10):
@@ -178,10 +189,12 @@ scroll_bar_left.grid(sticky = E+N+S, row = 0, column = 9, rowspan = 8, columnspa
 
 menu.add_cascade(label="File", menu=fileMenu)
 fileMenu.add_command(label="Open", command=callback, accelerator="Ctrl+o")
-fileMenu.add_command(label="Save ", command=file_save2)
+fileMenu.add_command(label="Save", command=file_save2)
 fileMenu.add_command(label="Save as", command=file_save, accelerator="Ctrl+s")
 fileMenu.add_separator()
 fileMenu.add_command(label="Exit", command=root.quit)
+menu.add_cascade(label="Edit", menu=editMenu)
+editMenu.add_command(label="Micro-Exps", command=open_exp)
 root.bind_all("<Control-o>", callback)
 root.bind_all("<Control-c>", gui.main)
 root.bind_all("<Control-s>", file_save)
