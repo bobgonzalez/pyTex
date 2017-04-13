@@ -46,6 +46,8 @@ class StdoutRedirector(object):
 
 class Redirector(object):
     def __init__(self, parent):
+        global twoT
+        twoT = 0
         self.parent = parent
         self.text_box = Text(self.parent, bd=5)
         self.text_box.grid(row=9, column=0, rowspan=1, columnspan=6, sticky=W + E + N + S)
@@ -98,7 +100,8 @@ class Redirector(object):
         self.text_box = Text(self.parent, bd=5)
         self.text_box.grid(row=9, column=0, rowspan=1, columnspan=6, sticky=W + E + N + S)
         sys.stdout = StdoutRedirector(self.text_box)
-        file_save2()
+        if twoT == 0:
+            file_save2()
         print compile_me(self.input_f, StdoutRedirector(self.text_box))
         reverse = self.input_f[::-1]
         a = reverse.index('/')
@@ -179,7 +182,7 @@ class Redirector(object):
 
     def term(self, *args):
         self.text_box = Frame(self.parent, height=20, width=40)
-        self.text_box.grid(row=9, column=0, rowspan=1, columnspan=6, sticky=W + E + N + S)
+        self.text_box.grid(row=9, column=0, rowspan=1, columnspan=6, sticky=W+E+N+S)
         wid = self.text_box.winfo_id()
         os.system('xterm -into %d -geometry 400x500 -sb &' % wid)
 
@@ -245,6 +248,14 @@ def file_save2(*args):
     f.close() # `()` was missing.
 
 
+def two_terms(*args):
+    global twoT
+    twoT = 1
+    t_box = Frame(root, height=60, width=40)
+    t_box.grid(row=0, column=0, rowspan=8, columnspan=3, sticky=W+E+N+S)
+    wid = t_box.winfo_id()
+    os.system('xterm -into %d -geometry 400x500 -sb &' % wid)
+
 counter = 0
 
 root = Tk()
@@ -270,10 +281,12 @@ fileMenu.add_separator()
 fileMenu.add_command(label="Exit", command=root.quit)
 menu.add_cascade(label="Edit", menu=editMenu)
 editMenu.add_command(label="Micro-Exps", command=open_exp)
+editMenu.add_command(label="2-terms", command=two_terms, accelerator="Ctrl+r")
 root.bind_all("<Control-o>", callback)
 root.bind_all("<Control-c>", gui.comp)
 root.bind_all("<Control-t>", gui.term)
 root.bind_all("<Control-s>", file_save)
+root.bind_all("<Control-r>", two_terms)
 global img_list
 
 '''left window for text entry'''
