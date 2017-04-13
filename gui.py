@@ -102,7 +102,11 @@ class Redirector(object):
         self.orig_img = img_list[counter]
         self.img = ImageTk.PhotoImage(self.orig_img)
         self.canvas.create_image(0, 0, image=self.img, anchor="nw")
-
+        global counter
+        if counter == len(img_list) - 1:
+            counter = 0
+        else:
+            counter = counter + 1
         self.vbar = Scrollbar(self.canvas, orient=VERTICAL)
         self.vbar.grid(sticky=E + N + S, row=0, column=9, rowspan=8, columnspan=1)
         self.vbar.config(command=self.canvas.yview)
