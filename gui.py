@@ -54,11 +54,17 @@ class Redirector(object):
         self.text_box2.insert(END, help_me())
         sys.stdout = StdoutRedirector(self.text_box)
         self.input_f = ''
+        self.x=1600
+        self.y=2000
         button = Button(self.parent, text="Compile", command=self.main)
         button.grid(row=8,column=0,sticky=E+W)
         button = Button(self.parent, text="Terminal", command=self.term)
         button.grid(row=8,column=1,sticky=E+W)
-        self.canvas = Canvas(self.parent, width=50, height=80, scrollregion=(0,0,1600,2000))
+        button = Button(self.parent, text="+", command=self.zoom_in)
+        button.grid(row=8, column=4, sticky=E + W)
+        button = Button(self.parent, text="-", command=self.zoom_out)
+        button.grid(row=8, column=3, sticky=E + W)
+        self.canvas = Canvas(self.parent, width=50, height=80, scrollregion=(0,0,self.x,self.y))
         self.canvas.grid(row=0, column=3, rowspan=8, columnspan=7, sticky=W + E + N + S)
         #self.canvas.config(scrollregion=self.canvas.bbox(ALL))
         self.scale = 1.0
@@ -96,22 +102,20 @@ class Redirector(object):
         pdf2jpg(reverse[:-3]+"pdf")
         global img_list
         img_list = []
-        resize(1600,2000)
+        resize(self.x,self.y)
         img_list = get_jpegs()
         self.canvas.delete("all")
         self.orig_img = img_list[counter]
         self.img = ImageTk.PhotoImage(self.orig_img)
         self.canvas.create_image(0, 0, image=self.img, anchor="nw")
-        global counter
-        if counter == len(img_list) - 1:
-            counter = 0
-        else:
-            counter = counter + 1
+        self.hbar = Scrollbar(self.canvas, orient=HORIZONTAL)
+        self.hbar.grid(sticky=E, row=8, column=5, rowspan=1, columnspan=6)
+        self.hbar.config(command=self.canvas.xview)
         self.vbar = Scrollbar(self.canvas, orient=VERTICAL)
         self.vbar.grid(sticky=E + N + S, row=0, column=9, rowspan=8, columnspan=1)
         self.vbar.config(command=self.canvas.yview)
         self.canvas.config(width=50, height=80)
-        self.canvas.config(yscrollcommand=self.vbar.set)
+        self.canvas.config(xscrollcommand=self.hbar.set, yscrollcommand=self.vbar.set)
         #self.canvas.image = self.img
         '''
         canvas.delete("all")
@@ -128,6 +132,48 @@ class Redirector(object):
 
     def main_help(self):
         print help_me()
+
+    def zoom_in(self, *args):
+        self.x = int(self.x * 1.2)
+        self.y = int(self.y * 1.2)
+        resize(self.x, self.y)
+        global img_list
+        img_list = []
+        img_list = get_jpegs()
+        self.canvas.configure(scrollregion=(0, 0, self.x, self.y))
+        self.canvas.delete("all")
+        self.orig_img = img_list[counter]
+        self.img = ImageTk.PhotoImage(self.orig_img)
+        self.canvas.create_image(0, 0, image=self.img, anchor="nw")
+        self.hbar = Scrollbar(self.canvas, orient=HORIZONTAL)
+        self.hbar.grid(sticky=E, row=8, column=5, rowspan=1, columnspan=6)
+        self.hbar.config(command=self.canvas.xview)
+        self.vbar = Scrollbar(self.canvas, orient=VERTICAL)
+        self.vbar.grid(sticky=E + S + W, row=0, column=9, rowspan=8, columnspan=1)
+        self.vbar.config(command=self.canvas.yview)
+        self.canvas.config(width=50, height=80)
+        self.canvas.config(xscrollcommand=self.hbar.set, yscrollcommand=self.vbar.set)
+
+    def zoom_out(self, *args):
+        self.x = int(self.x * 0.8)
+        self.y = int(self.y * 0.8)
+        resize(self.x, self.y)
+        global img_list
+        img_list = []
+        img_list = get_jpegs()
+        self.canvas.configure(scrollregion=(0, 0, self.x, self.y))
+        self.canvas.delete("all")
+        self.orig_img = img_list[counter]
+        self.img = ImageTk.PhotoImage(self.orig_img)
+        self.canvas.create_image(0, 0, image=self.img, anchor="nw")
+        self.hbar = Scrollbar(self.canvas, orient=HORIZONTAL)
+        self.hbar.grid(sticky=E, row=8, column=5, rowspan=1, columnspan=6)
+        self.hbar.config(command=self.canvas.xview)
+        self.vbar = Scrollbar(self.canvas, orient=VERTICAL)
+        self.vbar.grid(sticky=E + S + W, row=0, column=9, rowspan=8, columnspan=1)
+        self.vbar.config(command=self.canvas.yview)
+        self.canvas.config(width=50, height=80)
+        self.canvas.config(xscrollcommand=self.hbar.set, yscrollcommand=self.vbar.set)
 
     def spell(self):
         id = "New window "
@@ -160,28 +206,28 @@ class Redirector(object):
     def show_image1(self):
         """ > button """
         self.canvas.delete("all")
-        image1 = ImageTk.PhotoImage(img_list[counter])
-        self.canvas.create_image(0,0, anchor='nw',image=image1)
-        self.canvas.image = image1
         global counter
-        if counter == len(img_list)-1:
+        if counter == len(img_list) - 1:
             counter = 0
         else:
             counter = counter + 1
+        image1 = ImageTk.PhotoImage(img_list[counter])
+        self.canvas.create_image(0,0, anchor='nw',image=image1)
+        self.canvas.image = image1
         #print "in > button, counter is: " , counter
 
     def show_image2(self):
         """ < button """
         self.canvas.delete("all")
+        global counter
+        if counter == 0:
+            counter = len(img_list) - 1
+        else:
+            counter = counter - 1
         #image2 = ImageTk.PhotoImage(img_list[counter].resize((800, 1100), Image.NEAREST))
         image2 = ImageTk.PhotoImage(img_list[counter])
         self.canvas.create_image(0,0, anchor='nw',image=image2)
         self.canvas.image = image2
-        global counter
-        if counter == 0:
-            counter = len(img_list)-1
-        else:
-            counter = counter - 1
         #print "in < button, counter is: " , counter
 
 '''
