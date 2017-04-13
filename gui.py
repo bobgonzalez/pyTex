@@ -58,6 +58,7 @@ class Redirector(object):
         self.input_f = ''
         self.x = 1600
         self.y = 2000
+        self.zlevel = 0 #Zoom level [-5,5]
         button = Button(self.parent, text="Compile", command=self.comp)
         button.grid(row=8,column=0,sticky=E+W)
         button = Button(self.parent, text="Terminal", command=self.term)
@@ -88,7 +89,9 @@ class Redirector(object):
         b2.grid(row=8, column=7, sticky=E + W)
         self.canvas.bind("<ButtonPress-1>", self.scroll_start)
         self.canvas.bind("<B1-Motion>", self.scroll_move)
-        #root.bind("<MouseWheel>", self.zoomer)
+        self.canvas.bind("<Control-Button-4>", self.wheel_zoom)
+        self.canvas.bind("<Control-Button-5>", self.wheel_zoom)
+        
 
     def scroll_start(self, event):
         self.canvas.scan_mark(event.x, event.y)
@@ -131,9 +134,12 @@ class Redirector(object):
         print help_me()
 
     def zoom_in(self, *args):
-        self.x = int(self.x * 1.2)
-        self.y = int(self.y * 1.2)
-        resize(self.x, self.y)
+        #self.x = int(self.x * 1.2)
+        #self.y = int(self.y * 1.2)
+        #resize(self.x, self.y)
+        if self.zlevel < 9: #Zoom in
+            self.zlevel += 1
+        zoom(self.zlevel, self.x, self.y)
         global img_list
         img_list = []
         img_list = get_jpegs()
@@ -152,9 +158,12 @@ class Redirector(object):
         self.canvas.config(xscrollcommand=self.hbar.set, yscrollcommand=self.vbar.set)
 
     def zoom_out(self, *args):
-        self.x = int(self.x * 0.8)
-        self.y = int(self.y * 0.8)
-        resize(self.x, self.y)
+        #self.x = int(self.x * 0.8)
+        #self.y = int(self.y * 0.8)
+        #resize(self.x, self.y)
+        if self.zlevel > -9: #Zoom in
+            self.zlevel -= 1
+        zoom(self.zlevel, self.x, self.y)
         global img_list
         img_list = []
         img_list = get_jpegs()
@@ -171,6 +180,30 @@ class Redirector(object):
         self.vbar.config(command=self.canvas.yview)
         self.canvas.config(width=50, height=80)
         self.canvas.config(xscrollcommand=self.hbar.set, yscrollcommand=self.vbar.set)
+
+    def wheel_zoom(self, event):
+        if event.num == 4 and self.zlevel < 9: #Zoom in
+            self.zlevel += 1
+        elif event.num == 5 and self.zlevel > -9: #Zoom out
+            self.zlevel -= 1
+        zoom(self.zlevel, self.x, self.y)
+        global img_list
+        img_list = []
+        img_list = get_jpegs()
+        self.canvas.configure(scrollregion=(0, 0, self.x, self.y))
+        self.canvas.delete("all")
+        self.orig_img = img_list[counter]
+        self.img = ImageTk.PhotoImage(self.orig_img)
+        self.canvas.create_image(0, 0, image=self.img, anchor="nw")
+        self.hbar = Scrollbar(self.canvas, orient=HORIZONTAL)
+        self.hbar.grid(sticky=E + W, row=7, column=5)
+        self.hbar.config(command=self.canvas.xview)
+        self.vbar = Scrollbar(self.canvas, orient=VERTICAL)
+        self.vbar.grid(sticky=S + N, row=5, column=9)
+        self.vbar.config(command=self.canvas.yview)
+        self.canvas.config(width=50, height=80)
+        self.canvas.config(xscrollcommand=self.hbar.set, yscrollcommand=self.vbar.set)
+
 
     def InitUI(self):
         self.text_box = Text(self.parent, bd=5)
