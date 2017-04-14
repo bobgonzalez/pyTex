@@ -35,63 +35,38 @@ class StatusBar(Frame):
 """
 
 
-class StdoutRedirector(object):
-    def __init__(self, text_widget):
-        self.text_space = text_widget
-
-    def write(self, string):
-        self.text_space.insert('end', string)
-        self.text_space.see('end')
-
-
 class Redirector(object):
     def __init__(self, parent):
         global twoT
         twoT = 0
         self.parent = parent
-        self.text_box = Text(self.parent, bd=5)
-        self.text_box.grid(row=9, column=0, rowspan=1, columnspan=6, sticky=W + E + N + S)
-        self.text_box2 = Text(self.parent, bd=5)
-        self.text_box2.grid(row=9, column=6, rowspan=1, columnspan=4, sticky=W + E + N + S)
-        self.text_box2.insert(END, help_me())
-        sys.stdout = StdoutRedirector(self.text_box)
         self.input_f = ''
         self.x = 1600
         self.y = 2000
+        self.img_list = []
+        self.counter = 0
         self.zlevel = 0 #Zoom level [-5,5]
         button = Button(self.parent, text="Compile", command=self.comp)
-        button.grid(row=8,column=0,sticky=E+W)
-        button = Button(self.parent, text="Terminal", command=self.term)
-        button.grid(row=8,column=1,sticky=E+W)
+        button.grid(row=9, column=0, sticky=E+W)
+        button = Button(self.parent, text="Help", command=self.help)
+        button.grid(row=9, column=1, sticky=E+W)
         button = Button(self.parent, text="+", command=self.zoom_in)
-        button.grid(row=8, column=4, sticky=E+W)
+        button.grid(row=9, column=4, sticky=E+W)
         button = Button(self.parent, text="-", command=self.zoom_out)
-        button.grid(row=8, column=3, sticky=E+W)
+        button.grid(row=9, column=3, sticky=E+W)
         self.canvas = Canvas(self.parent, width=50, height=80, scrollregion=(0, 0, self.x, self.y))
-        self.canvas.grid(row=0, column=3, rowspan=8, columnspan=7, sticky=W + E + N + S)
+        self.canvas.grid(row=0, column=3, rowspan=9, columnspan=7, sticky=W+E+N+S)
         #self.canvas.config(scrollregion=self.canvas.bbox(ALL))
-        self.scale = 1.0
         self.orig_img = None
         self.img = None
-        self.zoomcycle = 0
-        self.zimg_id = None
-        self.hbar = Scrollbar(self.canvas, orient=HORIZONTAL)
-        self.hbar.grid(sticky=E+W, row=7, column=5)
-        self.hbar.config(command=self.canvas.xview)
-        self.vbar = Scrollbar(self.canvas, orient=VERTICAL)
-        self.vbar.grid(sticky=S+N, row = 5, column = 9)
-        self.vbar.config(command=self.canvas.yview)
-        self.canvas.config(width=50, height=80)
-        self.canvas.config(xscrollcommand=self.hbar.set, yscrollcommand=self.vbar.set)
-        b1 = Button(root, text=str("<"), command=self.show_image1)
-        b1.grid(row=8, column=6, sticky=E + W)
-        b2 = Button(root, text=">", command=self.show_image2)
-        b2.grid(row=8, column=7, sticky=E + W)
+        b1 = Button(root, text=str(">"), command=self.show_image1)
+        b1.grid(row=9, column=7, sticky=E+W)
+        b2 = Button(root, text="<", command=self.show_image2)
+        b2.grid(row=9, column=6, sticky=E+W)
         self.canvas.bind("<ButtonPress-1>", self.scroll_start)
         self.canvas.bind("<B1-Motion>", self.scroll_move)
         self.canvas.bind("<Control-Button-4>", self.wheel_zoom)
         self.canvas.bind("<Control-Button-5>", self.wheel_zoom)
-        
 
     def scroll_start(self, event):
         self.canvas.scan_mark(event.x, event.y)
@@ -100,152 +75,95 @@ class Redirector(object):
         self.canvas.scan_dragto(event.x, event.y, gain=1)
 
     def comp(self, *args):
-        self.text_box = Text(self.parent, bd=5)
-        self.text_box.grid(row=9, column=0, rowspan=1, columnspan=6, sticky=W + E + N + S)
-        sys.stdout = StdoutRedirector(self.text_box)
-        if twoT == 0:
+        if twoT == 1:
             file_save2()
-        print compile_me(self.input_f, StdoutRedirector(self.text_box))
+        print compile_me(self.input_f)
         reverse = self.input_f[::-1]
         a = reverse.index('/')
         reverse = reverse[:a]
         reverse = reverse[::-1]
         clear_jpegs()
-        pdf2jpg(reverse[:-3]+"pdf")
-        global img_list
-        img_list = []
-        resize(self.x,self.y)
-        img_list = get_jpegs()
+        pdf2jpg(reverse[:-4]+"1.pdf")
+        self.img_list = []
+        resize(self.x, self.y)
+        self.img_list = get_jpegs()
         self.canvas.delete("all")
-        self.orig_img = img_list[counter]
+        if len(self.img_list) > 1:
+            self.counter = len(self.img_list) - 1
+        self.orig_img = self.img_list[self.counter]
         self.img = ImageTk.PhotoImage(self.orig_img)
         self.canvas.create_image(0, 0, image=self.img, anchor="nw")
-        self.hbar = Scrollbar(self.canvas, orient=HORIZONTAL)
-        self.hbar.grid(sticky=E+W, row=7, column=5)
-        self.hbar.config(command=self.canvas.xview)
-        self.vbar = Scrollbar(self.canvas, orient=VERTICAL)
-        self.vbar.grid(sticky=S+N, row=5, column=9)
-        self.vbar.config(command=self.canvas.yview)
-        self.canvas.config(width=50, height=80)
-        self.canvas.config(xscrollcommand=self.hbar.set, yscrollcommand=self.vbar.set)
-        #self.canvas.image = self.img
 
     def main_help(self):
         print help_me()
 
     def zoom_in(self, *args):
-        #self.x = int(self.x * 1.2)
-        #self.y = int(self.y * 1.2)
-        #resize(self.x, self.y)
         if self.zlevel < 9: #Zoom in
             self.zlevel += 1
-        zoom(self.zlevel, self.x, self.y)
-        global img_list
-        img_list = []
-        img_list = get_jpegs()
+        self.x, self.y = zoom(self.zlevel)
+        self.img_list = []
+        self.img_list = get_jpegs()
         self.canvas.configure(scrollregion=(0, 0, self.x, self.y))
         self.canvas.delete("all")
-        self.orig_img = img_list[counter]
+        self.orig_img = self.img_list[self.counter]
         self.img = ImageTk.PhotoImage(self.orig_img)
         self.canvas.create_image(0, 0, image=self.img, anchor="nw")
-        self.hbar = Scrollbar(self.canvas, orient=HORIZONTAL)
-        self.hbar.grid(sticky=E + W, row=7, column=5)
-        self.hbar.config(command=self.canvas.xview)
-        self.vbar = Scrollbar(self.canvas, orient=VERTICAL)
-        self.vbar.grid(sticky=S + N, row=5, column=9)
-        self.vbar.config(command=self.canvas.yview)
-        self.canvas.config(width=50, height=80)
-        self.canvas.config(xscrollcommand=self.hbar.set, yscrollcommand=self.vbar.set)
 
     def zoom_out(self, *args):
-        #self.x = int(self.x * 0.8)
-        #self.y = int(self.y * 0.8)
-        #resize(self.x, self.y)
         if self.zlevel > -9: #Zoom in
             self.zlevel -= 1
-        zoom(self.zlevel, self.x, self.y)
-        global img_list
-        img_list = []
-        img_list = get_jpegs()
+        self.x, self.y = zoom(self.zlevel)
+        self.img_list = []
+        self.img_list = get_jpegs()
         self.canvas.configure(scrollregion=(0, 0, self.x, self.y))
         self.canvas.delete("all")
-        self.orig_img = img_list[counter]
+        self.orig_img = self.img_list[self.counter]
         self.img = ImageTk.PhotoImage(self.orig_img)
         self.canvas.create_image(0, 0, image=self.img, anchor="nw")
-        self.hbar = Scrollbar(self.canvas, orient=HORIZONTAL)
-        self.hbar.grid(sticky=E+W, row=7, column=5)
-        self.hbar.config(command=self.canvas.xview)
-        self.vbar = Scrollbar(self.canvas, orient=VERTICAL)
-        self.vbar.grid(sticky=S + N, row=5, column=9)
-        self.vbar.config(command=self.canvas.yview)
-        self.canvas.config(width=50, height=80)
-        self.canvas.config(xscrollcommand=self.hbar.set, yscrollcommand=self.vbar.set)
 
     def wheel_zoom(self, event):
         if event.num == 4 and self.zlevel < 9: #Zoom in
             self.zlevel += 1
         elif event.num == 5 and self.zlevel > -9: #Zoom out
             self.zlevel -= 1
-        zoom(self.zlevel, self.x, self.y)
-        global img_list
-        img_list = []
-        img_list = get_jpegs()
+        self.x, self.y = zoom(self.zlevel)
+        self.img_list = []
+        self.img_list = get_jpegs()
         self.canvas.configure(scrollregion=(0, 0, self.x, self.y))
         self.canvas.delete("all")
-        self.orig_img = img_list[counter]
+        self.orig_img = self.img_list[self.counter]
         self.img = ImageTk.PhotoImage(self.orig_img)
         self.canvas.create_image(0, 0, image=self.img, anchor="nw")
-        self.hbar = Scrollbar(self.canvas, orient=HORIZONTAL)
-        self.hbar.grid(sticky=E + W, row=7, column=5)
-        self.hbar.config(command=self.canvas.xview)
-        self.vbar = Scrollbar(self.canvas, orient=VERTICAL)
-        self.vbar.grid(sticky=S + N, row=5, column=9)
-        self.vbar.config(command=self.canvas.yview)
-        self.canvas.config(width=50, height=80)
-        self.canvas.config(xscrollcommand=self.hbar.set, yscrollcommand=self.vbar.set)
 
-
-    def InitUI(self):
-        self.text_box = Text(self.parent, bd=5)
-        self.text_box.grid(row=9, column=0, rowspan=1, columnspan=6, sticky=W+E+N+S)
-        self.text_box2 = Text(self.parent, bd=5)
-        self.text_box2.grid(row=9, column=6, rowspan=1, columnspan=4, sticky=W+E+N+S)
-        self.text_box2.insert(END, help_me())
-        sys.stdout = StdoutRedirector(self.text_box)
-
-    def term(self, *args):
-        self.text_box = Frame(self.parent, height=20, width=40)
-        self.text_box.grid(row=9, column=0, rowspan=1, columnspan=6, sticky=W+E+N+S)
-        wid = self.text_box.winfo_id()
-        os.system('xterm -into %d -geometry 400x500 -sb &' % wid)
+    def help(self, *args):
+        x = "this is a place holder"
 
     def show_image1(self):
         """ > button """
-        self.canvas.delete("all")
-        global counter
-        if counter == len(img_list) - 1:
-            counter = 0
+        if self.counter == len(self.img_list) - 1:
+            self.counter = 0
         else:
-            counter -= 1
-        image1 = ImageTk.PhotoImage(img_list[counter])
-        self.canvas.create_image(0,0, anchor='nw', image=image1)
-        self.canvas.image = image1
+            self.counter += 1
+        self.canvas.configure(scrollregion=(0, 0, self.x, self.y))
+        self.canvas.delete("all")
+        self.orig_img = self.img_list[self.counter]
+        self.img = ImageTk.PhotoImage(self.orig_img)
+        self.canvas.create_image(0, 0, image=self.img, anchor="nw")
 
     def show_image2(self):
         """ < button """
-        self.canvas.delete("all")
-        global counter
-        if counter == 0:
-            counter = len(img_list) - 1
+        if self.counter == 0:
+            self.counter = len(self.img_list) - 1
         else:
-            counter -= 1
-        #image2 = ImageTk.PhotoImage(img_list[counter].resize((800, 1100), Image.NEAREST))
-        image2 = ImageTk.PhotoImage(img_list[counter])
-        self.canvas.create_image(0,0, anchor='nw', image=image2)
-        self.canvas.image = image2
+            self.counter -= 1
+        self.canvas.configure(scrollregion=(0, 0, self.x, self.y))
+        self.canvas.delete("all")
+        self.orig_img = self.img_list[self.counter]
+        self.img = ImageTk.PhotoImage(self.orig_img)
+        self.canvas.create_image(0, 0, image=self.img, anchor="nw")
 
 
-def callback(*args):
+def file_open(*args):
     name = askopenfilename()
     gui.input_f = name
     L1.delete('1.0', END)
@@ -265,7 +183,7 @@ def open_exp(*args):
 
 def file_save(*args):
     f = tkFileDialog.asksaveasfile(mode='w', defaultextension=".txt")
-    if f is None: # asksaveasfile return `None` if dialog closed with "cancel".
+    if f is None:
         return
     text2save = str(L1.get(1.0, END)) # starts from `1.0`, not `0.0`
     f.write(text2save)
@@ -274,22 +192,27 @@ def file_save(*args):
 
 def file_save2(*args):
     f = open(gui.input_f, 'w')
-    if f is None: # asksaveasfile return `None` if dialog closed with "cancel".
+    if f is None:
         return
     text2save = str(L1.get(1.0, END)) # starts from `1.0`, not `0.0`
     f.write(text2save)
-    f.close() # `()` was missing.
+    f.close()
 
 
 def two_terms(*args):
     global twoT
-    twoT = 1
-    t_box = Frame(root, height=60, width=40)
-    t_box.grid(row=0, column=0, rowspan=8, columnspan=3, sticky=W+E+N+S)
-    wid = t_box.winfo_id()
-    os.system('xterm -into %d -geometry 400x500 -sb &' % wid)
+    global L1
+    L1 = Text(root, bd=5)
+    L1.grid(row=0, column=0, rowspan=9, columnspan=3, sticky=W + E + N + S)
+    if twoT == 1:
+        t_box = Frame(root, height=60, width=40)
+        t_box.grid(row=0, column=0, rowspan=9, columnspan=3, sticky=W + E + N + S)
+        wid = t_box.winfo_id()
+        os.system('xterm -into %d -geometry 400x500 -sb &' % wid)
+        twoT = 0
+    else:
+        twoT = 1
 
-counter = 0
 
 root = Tk()
 root.title("pyTex")
@@ -307,7 +230,7 @@ for c in range(10):
     root.columnconfigure(c, weight=1)
 
 menu.add_cascade(label="File", menu=fileMenu)
-fileMenu.add_command(label="Open", command=callback, accelerator="Ctrl+o")
+fileMenu.add_command(label="Open", command=file_open, accelerator="Ctrl+o")
 fileMenu.add_command(label="Save", command=file_save2)
 fileMenu.add_command(label="Save as", command=file_save, accelerator="Ctrl+s")
 fileMenu.add_separator()
@@ -315,16 +238,12 @@ fileMenu.add_command(label="Exit", command=root.quit)
 menu.add_cascade(label="Edit", menu=editMenu)
 editMenu.add_command(label="Micro-Exps", command=open_exp)
 editMenu.add_command(label="2-terms", command=two_terms, accelerator="Ctrl+r")
-root.bind_all("<Control-o>", callback)
+root.bind_all("<Control-o>", file_open)
 root.bind_all("<Control-c>", gui.comp)
-root.bind_all("<Control-t>", gui.term)
+root.bind_all("<Control-h>", gui.help)
 root.bind_all("<Control-s>", file_save)
 root.bind_all("<Control-r>", two_terms)
-global img_list
-
-'''left window for text entry'''
-L1 = Text(root, bd=5)
-L1.grid(row=0, column=0, rowspan=8, columnspan=3, sticky=W+E+N+S)
+two_terms()
 
 '''open window'''
 root.mainloop()
