@@ -29,7 +29,7 @@ def pdf2jpg(filepath):
     """
     try:
         with wandImage(filename=filepath, resolution=300) as img:
-            img.compression_quality = 100
+            img.compression_quality = 99
             img.save(filename="./Original/"+filepath[:-3]+"jpg")
             img.save(filename="./Zoom/"+filepath[:-3]+"jpg")
     except MissingDelegateError:
@@ -48,7 +48,7 @@ def resize(x, y):
     try:
         for file in listdir("./Original"):
             img = wandImage(filename="./Original/"+file, resolution=300)
-            img.compression_quality = 100
+            img.compression_quality = 99
             img.resize(x,y)
             img.save(filename="./Original/"+file)
             img.save(filename="./Zoom/"+file)
@@ -56,7 +56,7 @@ def resize(x, y):
         print("Error resizing.")
 
 
-def zoom(zlevel, x, y):
+def zoom(zlevel):
     """
     Description: Resize all JPEGs currently in the ./Zoom directory.
     Parameters: 3
@@ -66,14 +66,17 @@ def zoom(zlevel, x, y):
     Return: 0
         -:-
     """
-    level = {-9:0.1, -8:0.2, -7:0.3, -6:0.4, -5:0.5, -4:0.6, -3:0.7, -2:0.8, -1:0.9, 0:1.0,
-                1:1.1, 2:1.2, 3:1.3, 4:1.4, 5:1.5, 6:1.6, 7:1.7, 8:1.8, 9:1.9}
+    x = 1600
+    y = 2000
+    level = {-9: 0.1, -8: 0.2, -7: 0.3, -6: 0.4, -5: 0.5, -4: 0.6, -3: 0.7, -2: 0.8, -1: 0.9, 0: 1.0,
+             1: 1.1, 2: 1.2, 3: 1.3, 4: 1.4, 5: 1.5, 6: 1.6, 7: 1.7, 8: 1.8, 9: 1.9}
     try:
         for file in listdir("./Original"):
             img = wandImage(filename="./Original/"+file, resolution=300)
-            img.compression_quality = 100
-            img.resize(int(x*level[zlevel]),int(y*level[zlevel]))
+            img.compression_quality = 99
+            img.resize(int(x*level[zlevel]), int(y*level[zlevel]))
             img.save(filename="./Zoom/"+file)
+        return int(x*level[zlevel]), int(y*level[zlevel])
     except:
         print("Error zooming.")
 
@@ -86,7 +89,7 @@ def get_jpegs():
     Return: 1
         -: List containing PIL.image Image objects for each JPEG
     """
-    return [pilImage.open("./Zoom/"+file) for file in listdir("./Zoom") ]
+    return [pilImage.open("./Zoom/"+file) for file in listdir("./Zoom")]
 
 
 def clear_jpegs():
