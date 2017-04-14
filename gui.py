@@ -8,7 +8,7 @@ import ttk
 import tkFileDialog
 from img_proc import *
 import os
-
+import distutils.dir_util
 
 
 """
@@ -75,6 +75,8 @@ class Redirector(object):
         self.canvas.scan_dragto(event.x, event.y, gain=1)
 
     def comp(self, *args):
+        distutils.dir_util.mkpath('./Original')
+        distutils.dir_util.mkpath('./Zoom')
         if twoT == 1:
             file_save2()
         print compile_me(self.input_f)
