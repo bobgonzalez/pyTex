@@ -11,7 +11,7 @@ from micro_exp import MicroExpressions
 
 def init(file_name, *args):
     #file_name = sys.argv[1]
-    out = file_name.replace(".txt", ".tex")
+    out = file_name.replace(".tex", "1.tex")
     try:
         text_file = open(file_name, 'r')
     except (IOError, OSError) as e:
