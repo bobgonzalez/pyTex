@@ -90,8 +90,8 @@ class Redirector(object):
         resize(self.x, self.y)
         self.img_list = get_jpegs()
         self.canvas.delete("all")
-        if len(self.img_list) > 1:
-            self.counter = len(self.img_list) - 1
+        #if len(self.img_list) > 1:
+        #    self.counter = len(self.img_list) - 1
         self.orig_img = self.img_list[self.counter]
         self.img = ImageTk.PhotoImage(self.orig_img)
         self.canvas.create_image(0, 0, image=self.img, anchor="nw")
@@ -140,7 +140,7 @@ class Redirector(object):
     def help(self, *args):
         x = "this is a place holder"
 
-    def show_image1(self):
+    def show_image1(self, *args):
         """ > button """
         if self.counter == len(self.img_list) - 1:
             self.counter = 0
@@ -152,7 +152,7 @@ class Redirector(object):
         self.img = ImageTk.PhotoImage(self.orig_img)
         self.canvas.create_image(0, 0, image=self.img, anchor="nw")
 
-    def show_image2(self):
+    def show_image2(self, *args):
         """ < button """
         if self.counter == 0:
             self.counter = len(self.img_list) - 1
@@ -205,10 +205,10 @@ def two_terms(*args):
     global twoT
     global L1
     L1 = Text(root, bd=5)
-    L1.grid(row=0, column=0, rowspan=9, columnspan=3, sticky=W + E + N + S)
+    L1.grid(row=0, column=0, rowspan=9, columnspan=3, sticky=W+E+N+S)
     if twoT == 1:
         t_box = Frame(root, height=60, width=40)
-        t_box.grid(row=0, column=0, rowspan=9, columnspan=3, sticky=W + E + N + S)
+        t_box.grid(row=0, column=0, rowspan=9, columnspan=3, sticky=W+E+N+S)
         wid = t_box.winfo_id()
         os.system('xterm -into %d -geometry 400x500 -sb &' % wid)
         twoT = 0
@@ -245,6 +245,14 @@ root.bind_all("<Control-c>", gui.comp)
 root.bind_all("<Control-h>", gui.help)
 root.bind_all("<Control-s>", file_save)
 root.bind_all("<Control-r>", two_terms)
+root.bind_all("<Alt-h>", gui.show_image2)
+root.bind_all("<Alt-l>", gui.show_image1)
+root.bind_all("<Alt-k>", gui.zoom_in)
+root.bind_all("<Alt-j>", gui.zoom_out)
+root.bind_all("<Alt-Left>", gui.show_image2)
+root.bind_all("<Alt-Right>", gui.show_image1)
+root.bind_all("<Alt-Up>", gui.zoom_in)
+root.bind_all("<Alt-Down>", gui.zoom_out)
 two_terms()
 
 '''open window'''
