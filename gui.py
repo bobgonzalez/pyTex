@@ -204,16 +204,22 @@ def file_save2(*args):
 def two_terms(*args):
     global twoT
     global L1
-    L1 = Text(root, bd=5)
-    L1.grid(row=0, column=0, rowspan=9, columnspan=3, sticky=W+E+N+S)
     if twoT == 1:
+        file_save2()
         t_box = Frame(root, height=60, width=40)
         t_box.grid(row=0, column=0, rowspan=9, columnspan=3, sticky=W+E+N+S)
         wid = t_box.winfo_id()
         os.system('xterm -into %d -geometry 400x500 -sb &' % wid)
         twoT = 0
     else:
+        L1 = Text(root, bd=5)
+        L1.grid(row=0, column=0, rowspan=9, columnspan=3, sticky=W + E + N + S)
         twoT = 1
+        if gui.input_f != '':
+            L1.delete('1.0', END)
+            with open(gui.input_f, 'r') as x:
+                content = x.read()
+            L1.insert(INSERT, content)
 
 
 root = Tk()
