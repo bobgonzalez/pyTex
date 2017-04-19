@@ -164,18 +164,24 @@ class Redirector(object):
         self.canvas.create_image(0, 0, image=self.img, anchor="nw")
         self.default_status()
 
-    def default_status(self):
-        self.status.variable.set('Current Zoom Level: ' + str(self.zlevel) +
-                                 ' \tCurrent Page: ' + str(self.counter + 1) +
-                                 ' \tMake Title: ' + str(TITLE))
+    def default_status(self, *args):
+        vstring = ('Current Zoom Level: ' + str(self.zlevel) +
+                   ' \tCurrent Page: ' + str(self.counter + 1) +
+                   ' \tMake Title: ' + str(TITLE))
+        for arg in args:
+            vstring += str(arg)
+        self.status.variable.set(vstring)
+
 
 def file_open(*args):
     name = askopenfilename()
-    gui.input_f = name
-    L1.delete('1.0', END)
-    with open(name, 'r') as x:
-        content = x.read()
-    L1.insert(INSERT, content)
+    # gui.default_status("filename: " + name)
+    if isinstance(name, str) and name != '':
+        gui.input_f = name
+        L1.delete('1.0', END)
+        with open(name, 'r') as x:
+            content = x.read()
+        L1.insert(INSERT, content)
 
 
 def open_exp(*args):
@@ -187,7 +193,7 @@ def open_exp(*args):
     L1.insert(INSERT, content)
 
 
-def file_save(*args):
+def file_save_as(*args):
     f = tkFileDialog.asksaveasfile(mode='w', defaultextension=".txt")
     if f is None:
         return
@@ -196,7 +202,7 @@ def file_save(*args):
     f.close() # `()` was missing.
 
 
-def file_save2(*args):
+def file_save(*args):
     f = open(gui.input_f, 'w')
     if f is None:
         return
@@ -253,19 +259,21 @@ for c in range(10):
 
 menu.add_cascade(label="File", menu=fileMenu)
 fileMenu.add_command(label="Open", command=file_open, accelerator="Ctrl+o")
-fileMenu.add_command(label="Save", command=file_save2)
-fileMenu.add_command(label="Save as", command=file_save, accelerator="Ctrl+s")
+fileMenu.add_command(label="Save", command=file_save, accelerator="Ctrl+s")
+fileMenu.add_command(label="Save as", command=file_save_as, accelerator="Alt+s")
 fileMenu.add_separator()
 fileMenu.add_command(label="Exit", command=root.quit)
 menu.add_cascade(label="Edit", menu=editMenu)
 editMenu.add_command(label="Micro-Exps", command=open_exp)
-editMenu.add_command(label="Make Title", command=make_title)
+editMenu.add_command(label="Make Title", command=make_title, accelerator="Ctrl+t")
 editMenu.add_command(label="Use Terminal", command=two_terms, accelerator="Ctrl+r")
 root.bind_all("<Control-o>", file_open)
 root.bind_all("<Control-c>", gui.comp)
 root.bind_all("<Control-h>", gui.help)
 root.bind_all("<Control-s>", file_save)
+root.bind_all("<Alt-s>", file_save_as)
 root.bind_all("<Control-r>", two_terms)
+root.bind_all("<Control-t>", make_title)
 root.bind_all("<Alt-h>", gui.show_image2)
 root.bind_all("<Alt-l>", gui.show_image1)
 root.bind_all("<Alt-k>", gui.zoom_in)
