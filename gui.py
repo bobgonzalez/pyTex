@@ -73,7 +73,7 @@ class Redirector(object):
         distutils.dir_util.mkpath('./Original')
         distutils.dir_util.mkpath('./Zoom')
         if twoT == 1:
-            file_save2()
+            file_save()
         if TITLE:
             print compile_me(self.input_f, 1, "Title", "Author")
         else:
