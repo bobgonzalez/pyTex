@@ -216,7 +216,7 @@ def two_terms(*args):
     global L1
     if twoT == 1:
         if gui.input_f != '':
-            file_save2()
+            file_save()
         t_box = Frame(root, height=60, width=40)
         t_box.grid(row=0, column=0, rowspan=19, columnspan=3, sticky=W+E+N+S)
         wid = t_box.winfo_id()
