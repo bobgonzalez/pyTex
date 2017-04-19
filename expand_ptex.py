@@ -21,7 +21,9 @@ def init(file_name, *args):
     #file_name = file_name.replace("_", "\\_")
 
     print(make_header())
-    #print(make_title(file_name))
+    for title in args:
+        if title == 1:
+            print(make_title(args[1], args[2]))
     me = MicroExpressions()
     for line in text_file:
         row = line.split()
@@ -35,8 +37,6 @@ def init(file_name, *args):
 
     print("\n\\end{document}")
     text_file.close()
-    for R in args:
-        sys.stdout = R
     p = Popen(str("pdflatex " + str(out)), stdout=PIPE, stdin=PIPE, stderr=STDOUT, shell=True)
     while True:
         line = p.stdout.readline()
@@ -54,10 +54,10 @@ def make_header():
     return '\n'.join(ret)
 
 
-def make_title(file_name):
+def make_title(title, author):
     cur_date = date.today()
-    ret = ["\\title{\\textbf{" + file_name[:-4] + "}}",
-           "\\author{\\textsc{}}",
+    ret = ["\\title{\\textbf{" + title + "}}",
+           "\\author{\\textsc{" + author + "}}",
            "\\date{" + str(cur_date.month) + "/" + str(cur_date.day) + "/" + str(cur_date.year) + "}",
            "\\maketitle\n"]
     return '\n'.join(ret)
