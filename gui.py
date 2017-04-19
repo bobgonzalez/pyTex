@@ -108,6 +108,7 @@ class Redirector(object):
         self.img = ImageTk.PhotoImage(self.orig_img)
         self.canvas.create_image(0, 0, image=self.img, anchor="nw")
         self.default_status()
+
     def zoom_out(self, *args):
         if self.zlevel > -9: #Zoom in
             self.zlevel -= 1
@@ -120,6 +121,7 @@ class Redirector(object):
         self.img = ImageTk.PhotoImage(self.orig_img)
         self.canvas.create_image(0, 0, image=self.img, anchor="nw")
         self.default_status()
+
     def wheel_zoom(self, event):
         if event.num == 4 and self.zlevel < 9: #Zoom in
             self.zlevel += 1
