@@ -35,6 +35,7 @@ class Redirector(object):
         self.parent = parent
         self.status = StatusBar(parent)
         self.input_f = ''
+        self.cNum = 0
         self.x = 1600
         self.y = 2000
         self.img_list = []
@@ -70,6 +71,7 @@ class Redirector(object):
         self.canvas.scan_dragto(event.x, event.y, gain=1)
 
     def comp(self, *args):
+        self.cNum += 1
         distutils.dir_util.mkpath('./Original')
         distutils.dir_util.mkpath('./Zoom')
         if twoT == 1:
@@ -91,7 +93,7 @@ class Redirector(object):
         self.orig_img = self.img_list[self.counter]
         self.img = ImageTk.PhotoImage(self.orig_img)
         self.canvas.create_image(0, 0, image=self.img, anchor="nw")
-        self.status.variable.set('Compiled ' + self.input_f)
+        self.default_status()
 
     def main_help(self):
         print help_me()
@@ -167,9 +169,19 @@ class Redirector(object):
         self.default_status()
 
     def default_status(self, *args):
-        vstring = ('Current Zoom Level: ' + str(self.zlevel) +
-                   ' \tCurrent Page: ' + str(self.counter + 1) +
-                   ' \tMake Title: ' + str(TITLE))
+        if self.input_f != '':
+            reverse = self.input_f[::-1]
+            a = reverse.index('/')
+            reverse = reverse[:a]
+            reverse = reverse[::-1]
+        else:
+            reverse = 'No File Selected'
+        vstring = ('File: ' + str(reverse) +
+                   ' \tCompilation: ' + str(self.cNum) +
+                   ' \tMake Title: ' + str(TITLE) +
+                   ' \tCurrent Zoom Level: ' + str(self.zlevel) +
+                   ' \tCurrent Page: ' + str(self.counter + 1)
+                   )
         for arg in args:
             vstring += str(arg)
         self.status.variable.set(vstring)
@@ -184,6 +196,9 @@ def file_open(*args):
         with open(name, 'r') as x:
             content = x.read()
         L1.insert(INSERT, content)
+        gui.cNum = 0
+        gui.default_status()
+        gui.canvas.delete("all")
 
 
 def open_exp(*args):
