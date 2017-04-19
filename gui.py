@@ -179,7 +179,7 @@ class Redirector(object):
         vstring = ('File: ' + str(reverse) +
                    ' \tCompilation: ' + str(self.cNum) +
                    ' \tMake Title: ' + str(TITLE) +
-                   ' \tCurrent Zoom Level: ' + str(self.zlevel) +
+                   ' \t\tCurrent Zoom Level: ' + str(self.zlevel) +
                    ' \tCurrent Page: ' + str(self.counter + 1)
                    )
         for arg in args:
