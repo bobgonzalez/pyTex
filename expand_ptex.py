@@ -5,7 +5,6 @@ from subprocess import call, Popen, PIPE, STDOUT
 from token_check import token_check
 from micro_exp import MicroExpressions
 """
-    *TODO: after successful compilation help command does not print to buffer
     **TODO: flag for explicit filename extensions
 """
 
@@ -39,16 +38,12 @@ def init(file_name, *args):
     for R in args:
         sys.stdout = R
     p = Popen(str("pdflatex " + str(out)), stdout=PIPE, stdin=PIPE, stderr=STDOUT, shell=True)
-
     while True:
         line = p.stdout.readline()
         print(line)
-        # r = raw_input()
-        # p.stdin.write('\n')
         if not line:
             break
-
-            # call(["pdflatex", str(out)])
+    # call(["pdflatex", str(out)])
 
 
 def make_header():
