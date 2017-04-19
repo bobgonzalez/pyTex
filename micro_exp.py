@@ -4,7 +4,7 @@ WISH_LIST_OF_MICROEXPRESSIONS:
         - BP + EP -> begin / end proof / theorem / lemma / corollary
         - TLINE -> \\ \hline
         - BTAB + ETAB -> begin table center tabular end where BT takes in '|l|l|' parameter to tabular
-        - IG -> print this line as is (ignore micro-expressions)
+        - BIG / EIG -> begin / end ignore for adding on to existing latex
 """
 
 
@@ -173,7 +173,6 @@ class Exp16(Exp):
         return str("\\rule{\\linewidth}{0.2mm}")
 
 
-"""TODO : Entry in help dialog"""
 class Exp17(Exp):
     def __init__(self):
         Exp.__init__(self, "IG")
@@ -182,7 +181,6 @@ class Exp17(Exp):
         return token_check(line[3:])
 
 
-"""TODO : Entry in help dialog"""
 class Exp18(Exp):
     def __init__(self):
         Exp.__init__(self, "IGA")
