@@ -9,6 +9,7 @@ import tkFileDialog
 from img_proc import *
 import os
 import distutils.dir_util
+import tkMessageBox
 
 
 """
@@ -140,7 +141,20 @@ class Redirector(object):
         self.default_status()
 
     def help(self, *args):
-        x = "this is a place holder"
+        popup = Tk()
+        popup.geometry('700x400')
+        frame = Frame(popup)
+        canvas = Canvas(frame,scrollregion=(0,0,500,800))
+        popup.title("Formatting Help")
+        label = Text(popup)
+        label.insert(END,help_me())
+        label.pack(side=LEFT, fill=BOTH, expand=1)
+        scroller = Scrollbar(label, orient='vertical')
+        scroller.pack(side=RIGHT, fill=Y)
+        scroller.config(command=label.yview)
+        label.config(yscrollcommand=scroller.set)
+        canvas.pack()
+        popup.mainloop()
 
     def show_image1(self, *args):
         """ > button """
