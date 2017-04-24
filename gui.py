@@ -6,6 +6,7 @@ from expand_ptex import init as compile_me
 from help_me import help_me
 #import ttk
 import tkFileDialog
+import tkSimpleDialog
 from img_proc import *
 import os
 import distutils.dir_util
@@ -18,6 +19,8 @@ import tkMessageBox
 """
 
 TITLE = False
+TITLE_NAME = ''
+AUTHOR = ''
 twoT = 0
 
 
@@ -78,7 +81,7 @@ class Redirector(object):
         if twoT == 1:
             file_save()
         if TITLE:
-            print compile_me(self.input_f, 1, "Title", "Author")
+            print compile_me(self.input_f, 1, TITLE_NAME, AUTHOR)
         else:
             print compile_me(self.input_f)
         reverse = self.input_f[::-1]
@@ -266,10 +269,17 @@ def two_terms(*args):
 
 def make_title(*args):
     global TITLE
+    global TITLE_NAME
+    global AUTHOR
+    TITLE_NAME = tkSimpleDialog.askstring("Title", "Enter title")
+    AUTHOR = tkSimpleDialog.askstring("Author", "Enter author")
+   # print TITLE
+   # print AUTHOR
     if TITLE:
         TITLE = False
     else:
         TITLE = True
+
     gui.default_status()
 
 
